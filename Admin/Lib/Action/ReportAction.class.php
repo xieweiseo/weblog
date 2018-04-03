@@ -402,7 +402,7 @@ class ReportAction extends CommonAction {
             $map .= 'and hotel_name like "%'.$hotel_name.'%" ' ;
         }
                
-        $db_config = C('DB_CONFIG');//"mysql://xw:AoJGjhCHa9PR5xNJ@127.0.0.1:3306/panel";  
+        $db_config = C('DB_CONFIG'); 
         $prefix = 'user_panel_click_sum_';         
         $Model = new Model();
         $db = $Model->db(1,$db_config);
