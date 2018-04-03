@@ -1,7 +1,7 @@
 <?php
-//��������ģʽ
+//开启调试模式
 define('APP_DEBUG',true);
-//ǰ̨Ŀ¼
+//前台目录.
 define('APP_PATH', './W3note/');
 define('W3CORE_PATH','./ThinkPHP');
 require W3CORE_PATH.'/ThinkPHP.php';
