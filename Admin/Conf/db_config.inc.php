@@ -13,7 +13,7 @@ return array(
 	'RBAC_ACCESS_TABLE'=>'wb_access',
 	'RBAC_NODE_TABLE'=>'wb_node',
 	'KEYCODE'=>'x53pc9',
-    'APP_DEBUG'     =>  true,// 开启调试模式
-     $DB_CONFIG => "mysql://root:root@127.0.0.1:3306/panel"
+    'APP_DEBUG'=>  true,// 开启调试模式
+    $DB_CONFIG => "mysql://root:root@127.0.0.1:3306/panel"
 );
 ?>
