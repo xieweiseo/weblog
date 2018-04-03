@@ -1,8 +1,8 @@
 <?php
-//¿ªÆôµ÷ÊÔÄ£Ê½
+//å¼€å¯è°ƒè¯•æ¨¡å¼
 define('APP_DEBUG',true);
 define('APP_NAME', 'Admin');
-//ºóÌ¨Ä¿Â¼
+//åŽå°ç›®å½•.
 define('APP_PATH', './Admin/');
 define('W3CORE_PATH','./ThinkPHP');
 require W3CORE_PATH.'/ThinkPHP.php';
