@@ -1,2 +1,2 @@
 # weblog
-Hotel project changed by Weblog
+Hotel Management System Based on thinkphp3.1.3
