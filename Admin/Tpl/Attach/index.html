@@ -1,0 +1,158 @@
+<include file="Public:header" />
+<link href="__PUBLIC__/admin/js/layer/skin/default/layer.css" rel="stylesheet" type="text/css" />
+<script src="__PUBLIC__/admin/js/jquery.min.js" type="text/javascript" ></script>
+<script src="__PUBLIC__/admin/js/layer/layer.js" type="text/javascript" ></script>
+<script language="Javascript">
+function delet()
+{
+  if(confirm("确定删除该记录吗?")){
+    return document.myform.action='?m=Attach&a=act&action=delete';
+	
+  }else{
+   return false;
+  }
+} 
+</script>
+<body>
+<div style="border:1px solid #C8DAA3;">
+ <div>
+    <div style="background:#EEF5DE;height:20px;padding-top: 5px;">
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;">
+   当前位置：
+        <if condition="$modules eq 'Picture'"> 
+         <a href="__APP__/{$modules}/index">图片管理</a>>>管理图片
+        <elseif condition="$modules eq 'Download'"/>
+        <a href="__APP__/{$modules}/index">下载管理</a>>>附件管理
+        <else />
+          >>上传附件
+        </if> 
+   </span>
+    </div>
+   
+   
+   
+</div>
+<div style="border:1px solid #C8DAA3;">
+ <div>
+        <div style="background:#FFFFFF;height:20px;margin-bottom:5px;"><p>
+    <a href="__URL__/index"  target="main" title="管理列表" style="text-decoration:none;color:#333">
+   <span style="margin-right:5px;margin-top:5px;margin-left:10px;padding: 3px;font-size:12px;background-color:#618d01;color:#fff;">
+   管理列表</span></a>
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;">
+   <a href="__APP__/Attach/add/module/{$modules}/id/{$recordId}">
+   <if condition="($modules eq 'Picture') and ($recordId neq '0')">添加图片
+   <elseif condition="($modules eq 'Download') and ($recordId neq '0')"/>添加附件</if>
+   </a>
+   </span>
+    </div>
+   <hr style="margin-right:10px;margin-left:10px;color:#EEEEEE;"/>
+</div>
+<div class="pad_10" style="margin-right:10px;margin-left:10px;font-size:12px;">
+<div id="searchid">
+   <table width="100%" cellspacing="0" class="search-form">
+    <tbody>
+	  <tr>
+		<td>
+		<div style="border:1px solid #ffbe7a;zoom:1; background: #fffced; padding:8px 10px; line-height:20px;">
+		<form action="__URL__/index" method="POST">
+             所属模型:
+            <select name="module" onChange="document.all.dosubmit.click()">
+			<option value="p">请选择模型</option>
+			<volist name="Modelist" id="mo">
+			<if condition="$modules eq $mo['module']"> 
+			<option value="{$mo['module']}" selected>
+				{$mo['module']}
+			</option>
+			<else />
+			
+            <option value="{$mo['module']}">
+				{$mo['module']}
+			</option>
+			</if>
+			</volist>
+		  </select>	
+		
+          <input  type="submit"  name='dosubmit' class="button" value="搜索" />
+           </form>
+		</div>
+		</td>
+	 </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="table-list">
+    <form name="myform"  id="myform" method="POST">
+    <table width="100%" cellspacing="0" style="font-size:12px;">
+        <thead>
+            <tr>
+            <th width="50" align="center">选取</th>			
+			<th align="center">ID</th>
+            <th align="center">附件名称</th>
+			<th align="center">保存名称</th>
+			<th  align="center">所属文章</th>	
+			<th  align="center">附件大小</th>												
+			<th align="center">所属模型</th>
+			<th  align="center">更新时间</th>
+			<th  align="center">管理操作</th>						
+            </tr>
+        </thead>
+    <tbody> 
+    <volist name="Attachlist" id="vo">
+	<tr>
+	<td align="center"><input type="checkbox" name="id[]" value="{$vo['id']}"></td>	
+	<td align="center">{$vo['id']}</td>
+	<td align="center">{$vo['name']}</td>
+    <td align="center"><a class="view_pic" data="__PUBLIC__/Uploads/File/{$vo['savename']}" href="javascript:void(0)">{$vo['savename']}</a></td>
+	<!-- <td align="center"><a href="__PUBLIC__/Uploads/File/{$vo['savename']}">{$vo['savename']}</a></td> -->
+	<td align="center">{$vo['title']}</td>		
+	<td align="center">{$vo['size']|sizecount}</td>
+    <td align="center">{$vo['module']}</td>
+	<td align="center">{$vo['updateTime']|date="Y-m-d H:i:s",###}</td>
+	<td align="center"> 
+      <a class="view_pic" data="__PUBLIC__/Uploads/File/{$vo['savename']}" href="javascript:void(0)">查看</a>|   
+      <a href="__URL__/act/id/{$vo['id']}/action/delete" onClick="return confirm('确定删除该记录吗?')">删除</a>
+     <!--  <a href="javascript:void(0)" onClick="return confirm('确定删除该记录吗?')">删除</a> -->
+    </td>	
+	</tr>
+	 </volist>	
+  </tbody>
+ </table>
+	<div class="btn" style="font-size:12px;">
+    <label for="check_box" id ="CheckedRev">
+    <a href="javascript:selAll()" class="coolbg">全选</a>&nbsp;
+	<a href="javascript:noSelAll()" class="coolbg">取消</a> 
+    </label>  &nbsp;&nbsp;     
+        <input type="submit" name="act" value="删除" class="coolbg" onClick="delet()"/>&nbsp;
+        <input  type="button" onClick="history.back()" class="button" style="margin-left: 400px;" value="返回" alt="返回" />	
+        &nbsp;&nbsp;<div id="pages"> {$page}</div>
+	   </div>
+</form>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">
+$(function(){
+	$(".view_pic").click(function(){
+		var pic_url = $(this).attr('data');		
+		layer.open({
+			  type: 1,
+			  title: false,
+			  closeBtn: 1,
+			  time:5000,
+			  shadeClose:true,
+			  shade: 0.01,
+			  offset: ['100px','200px'],
+			  maxWidth:true,
+			  skin: 'layui-layer-nobg', //没有背景色
+			  shadeClose: true,
+			  content: '<img src="'+pic_url+'">'
+			});
+	});
+});
+</script>
+</body>
+</html>
+

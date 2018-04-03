@@ -1,0 +1,151 @@
+<include file="Public:kindeditorheader" />
+<script>
+	var editor;
+	KindEditor.ready(function(K) {
+	editor = K.create('textarea[name="content"]', {
+					allowFileManager : true
+				});
+				K('#image').click(function() {
+					editor.loadPlugin('image', function() {
+						editor.plugin.imageDialog({
+							imageUrl : K('#thumb').val(),
+							clickFn : function(url, title, width, height, border, align) {
+								K('#thumb').val(url);
+								editor.hideDialog();
+							}
+						});
+					});
+				});
+            });
+</script>
+<style type="text/css"> 
+<!-- 
+body { font:12px/19px Arial, Helvetica, sans-serif; color:#666;}
+form div { margin:5px 0;}
+.int label { float:left; width:100px; text-align:right;}
+.int input { padding:1px 1px; border:1px solid #ccc;height:16px;}
+.sub { padding-left:100px;}
+.sub input { margin-right:10px; }
+.formtips{width: 200px;margin:2px;padding:2px;}
+.onError{
+    background:#FFE0E9 url(../img/reg3.gif) no-repeat 0 center;
+	padding-left:25px;
+}
+.onSuccess{
+    background:#E9FBEB url(../img/reg4.gif) no-repeat 0 center;
+	padding-left:25px;
+}
+.high{
+    color:red;
+}
+.subnav{
+	 /*padding:10px;*/
+	 border-style: solid;
+     border-bottom-width: 3px;
+	 border-bottom-color:#EEEEEE;  
+}.subnav h2{ margin-bottom:6px}
+--> 
+</style> 
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+		//如果是必填的，则加红星标识.
+		$("form :input.required").each(function(){
+			var $required = $("<strong class='high'> *</strong>"); //创建元素
+			$(this).parent().append($required); //然后将它追加到文档中
+		});
+        
+	    $('form :input').blur(function(){
+			 var $parent = $(this).parent();
+			 $parent.find(".formtips").remove();
+			 //验证用户名
+			 if( $(this).is('#title') ){
+					if( this.value==""){
+					    var errorMsg = '标题不能为空.';
+                        $parent.append('<span class="formtips onError">'+errorMsg+'</span>');
+
+					}else{
+					    var okMsg = '<img src="__PUBLIC__/Css/Admin/images/reg4.gif" width="22" height="22" />';
+					    $parent.append('<span class="formtips onSuccess">'+okMsg+'</span>');
+					}
+			 }
+			 if( $(this).is('#content') ){
+					if( this.value==""){
+					    var errorMsg = '内容不能为空.';
+                        $parent.append('<span class="formtips onError">'+errorMsg+'</span>');
+					}else{
+					    var okMsg = '<img src="__PUBLIC__/Css/Admin/images/reg4.gif" width="22" height="22" />';
+					    $parent.append('<span class="formtips onSuccess">'+okMsg+'</span>');
+					}
+			 }
+			 
+		}).keyup(function(){
+		   $(this).triggerHandler("blur");
+		}).focus(function(){
+	  	   $(this).triggerHandler("blur");
+		});//end blur
+		//重置
+		 $('#res').click(function(){
+				$(".formtips").remove(); 
+		 });
+})
+//]]>
+</script>
+<body>
+<div style="border:1px solid #C8DAA3;">
+ <div>
+    <div style="background:#EEF5DE;height:25px;margin-bottom:5px;">
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;">当前位置:广告>修改</span>
+    </div>
+   
+</div>
+<div style="border:1px solid #C8DAA3;">
+ <div>
+    <div style="background:#FFFFFF;height:25px;margin-bottom:5px;">
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;"><a href="__URL__/index"  target="main" title="管理列表">管理列表</a></span>|
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;"><a href="__URL__/insert"  target="main" title="添加内容">添加内容</a></span>
+    </div>
+   <hr />
+</div>
+<div class="table-list">
+     <form action="__URL__/update" method="POST" >
+    <table width="100%" cellspacing="0" style="font-size:12px;">
+       <tbody>
+            <tr>
+            <td width="200" align="right">名称：</td>
+            <td align="left">
+            <input type="text" name="name" value="{$vo['name']}" size="50">
+            </td>	
+            </tr>
+            <tr>
+            <td width="50" align="right">链接地址：</td>
+            <td align="left">
+          <input type="text" name="url" value="{$vo['url']}" size="50">
+            </td>	
+            </tr>
+            <tr>
+            <td width="50" align="right">广告联盟地址：</td>
+            <td align="left">
+          <textarea name="advurl" rows="3" cols="60" >{$vo['advurl']}</textarea>
+            </td>	
+            </tr>
+             <tr>
+            <td width="50" align="right">描述：</td>
+            <td align="left">
+          <textarea name="introduce" rows="3" cols="60" >{$vo['introduce']}</textarea>
+            </td>	
+            </tr>
+       </tbody>
+    
+ </table>
+	<div class="btn" style="font-size:12px;">
+           <input type=hidden name="id" value="{$vo['id']}">
+          <input type="submit"  name="dosubmit" value="提交" id="send" class="button" style="margin-left: 450px;">&nbsp;&nbsp;
+		 <input  type="button" onClick="history.back()" class="button" value="取 消" alt="取消" />
+	   </div>
+</form>
+</div>
+</div>
+</div>
+</body>
+</html>

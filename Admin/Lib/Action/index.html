@@ -1,0 +1,121 @@
+<include file="Public:header" />
+<link href="__PUBLIC__/admin/js/layer/skin/default/layer.css" rel="stylesheet" type="text/css" />
+<script src="__PUBLIC__/admin/js/jquery.min.js" type="text/javascript" ></script>
+<script src="__PUBLIC__/admin/js/layer/layer.js" type="text/javascript" ></script>
+<body>
+<div>
+ <div>
+    <div style="background:#EEF5DE;height:20px;padding-top: 5px;">
+      <span style="margin-right:5px;margin-left:5px;font-size:12px;">当前位置: 酒店&nbsp;>&nbsp;账号列表</span>
+    </div>   
+</div>
+<div style="border:1px solid #C8DAA3;margin-bottom:3px;">
+<div>
+<div style="background:#FFFFFF;height:25px;margin-bottom:2px;padding-top:8px;">
+	   <a href="javascript:void(0)" class="import" target="main" title="账号列表" style="text-decoration:none;color:#333">
+	   <span  style="margin-right:5px;margin-top:5px;margin-left:10px;padding: 3px;font-size:12px;background-color:#618d01;color:#fff;">
+	          导 入</span></a>| 
+	   <span style="margin-right:5px;margin-left:5px;font-size:12px;">
+	   <a href="{:U('insert')}" style="text-decoration:none;" target="main" title="添加">添加</a>
+	   </span> 
+   </div>
+ </div>
+</div>
+
+<div class="pad_10" style="margin-right:10px;margin-left:10px;font-size:12px;">
+<div id="searchid">
+   <table width="98%" cellspacing="0" class="search-form">
+    <tbody>
+	  <tr>
+		<td>
+		<div style="border:1px solid #87b87f;zoom:1; background: rgba(255, 255, 255, 0.15); padding:5px 10px; line-height:20px;">
+		<form id="search_form" class="form-inline" action="__URL__/index" method="post">
+                   电视账号
+          <input type="text" name="user_id" value="{:I('user_id')}" >&nbsp;
+                  广电号     
+          <input type="text" name="device_code" value="{:I('device_code')}" >
+                  设备MAC     
+          <input type="text" name="device_mac" value="{:I('device_mac')}" >  
+          <select name="status" id="status" style="height:31px;margin-bottom:3px;">
+          	<option value="0">--全部--</option>
+          	<option value="-1" <if condition="I('status') eq -1">selected</if>>未读取</option>
+          	<option value="1" <if condition="I('status') eq 1">selected</if>>已读取</option>
+          </select>      
+          <input  type="submit"  name='dosubmit' class="btn-info" value="搜索" />
+        </form>
+		</div>
+		</td>
+	 </tr>
+    </tbody>
+   </table>
+  </div>
+</div>
+
+<div class="table-list">
+   <form name="myform"  id="myform" action="__URL__/syncs" method="POST">
+    <table width="98%" cellspacing="0" style="font-size:12px;">
+       <thead>
+        <tr>
+        <th width="50" align="left"><input class="check-all" type="checkbox" value=""></th>
+        <th align="left">ID</th>
+		<th align="left">电视账号</th>
+		<th align="left">易视腾ID</th>
+		<th align="left">广电号</th>
+		<th align="left">设备MAC</th>		
+		<th align="left">状态</th>
+		<th align="left">所属酒店</th>	
+		<th align="left">管理操作</th>				
+        </tr>
+       </thead>
+    <tbody> 
+    <volist name="list" id="vo">
+	<tr>
+	<td align="left"><input type="hidden" name="ids[]" value="{$vo['id']}" > <input type="checkbox" name="macs[]" class="aids" value="{$vo['device_mac']}" id="id"></td>	
+	<td align="left">{$vo['id']}</td>
+	<td align="left">{$vo['user_id']}</td>
+	<td align="left">{$vo['ysten_id']}</td>
+	<td align="left">{$vo['device_code']}</td>
+	<td align="left">{$vo['device_mac']}</td>	
+	<td align="left">
+	<php>
+	   if($vo['status'] == 1 AND $vo['device_code'] !='' AND $vo['device_mac'] !=''){
+	      echo '<span style="color:green;">已读取</span>';
+	   }
+	   elseif($vo['status'] == 2){
+	     echo '<span style="color:orange;">不存在</span>';
+	   }
+	   elseif($vo['status'] == 3){
+	     echo '<span style="color:#FF6A31;">存异常</span>';
+	   }
+	   else{
+	     //echo $vo['status'];
+	   }
+	</php>
+	<td align="left">{$vo['hotel_name']}</td>
+	</td>
+	<td align="left">
+	<a href="{:U('del',array('ids'=>$vo['id'],'user_id'=>$vo['user_id']))}" onClick="return confirm('确定删除该记录吗?')">删除</a>
+	</td>
+	</tr>
+	</volist>	
+    </tbody>
+    </table>
+	<div class="btn" style="font-size:12px;">
+     <label for="check_box" id ="CheckedRev">
+		<a href="javascript:void(0)" class="coolbg import">导入</a>&nbsp;
+		<a href="javascript:history.back();" class="coolbg">返回</a>&nbsp;
+     </label>
+     <div id="pages"> {$page}</div>
+	</div>
+ </form>
+</div>
+</div>
+<script>
+$(function(){
+	$('.import').click(function(){
+		window.location = "{:U('import')}";
+	});
+});
+</script>
+</body>
+</html>

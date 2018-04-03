@@ -1,0 +1,129 @@
+<include file="Public:indexheader"/>
+<script type="text/javascript">
+function delet()
+{
+  if(confirm("确定删除该记录吗?")){
+    return document.myform.action='?m=Node&a=act&action=delete';	
+  }else{
+    return false;
+  }
+} 
+</script>
+<style type="text/css"> 
+<!-- 
+.subnav{
+	 /*padding:10px;*/
+	 border-style: solid;
+     border-bottom-width: 3px;
+	 border-bottom-color:#EEEEEE;  
+}.subnav h2{ margin-bottom:6px}
+--> 
+</style> 
+
+<body>
+<div style="border:1px solid #C8DAA3;">
+ <div>
+    <div style="background:#EEF5DE;height:25px;padding-top: 5px;">
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;">当前位置:会员>节点管理</span>
+    </div>
+   
+</div>
+<div style="border:1px solid #C8DAA3;">
+ <div>
+   <div style="background:#FFFFFF;height:25px;">
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;"><a href="__URL__/index"  target="main" title="会员管理">管理列表</a></span>|
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;"><a href="__URL__/insert"  target="main" title="添加节点">添加节点</a></span>
+    </div>
+   <hr />
+</div>
+<div class="pad_10">
+<div id="searchid">
+   <table width="100%" cellspacing="0" class="search-form">
+    <tbody>
+	  <tr>
+		<td>
+		<div style="border:1px solid #87b87f;zoom:1; background: rgba(255, 255, 255, 0.15); padding:8px 10px; line-height:20px;">
+		
+		</div>
+		</td>
+	 </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="table-list">
+    <form name="myform"  id="myform" method="POST">
+    <table width="100%" cellspacing="0" style="font-size:12px;">
+        <thead>
+            <tr>
+            <th width="50" align="center">选取</th>
+            <th align="left">排序</th>
+			<th align="left">应用名称</th>
+            <th align="left">链接</th>
+			<th align="center">状态</th>
+			<th align="center">管理操作</th>
+            </tr>
+        </thead>
+    <tbody> 
+    <volist name="Nodelist" id="vo">
+	<tr>
+	<td align="center"><input type="checkbox" name="id[]" value="{$vo['id']}" id="id"></td>	
+    <td align="left"><input type=hidden name="ids[]" value="{$vo['id']}"><input type="text" class="inputorder" val="{$vo['id']}" name="sort[]" size="1" value="{$vo['sort']}"></td>
+	<td align="left">{$vo['title']}</td>	
+	<td align="left">{$vo['name']}</td>    
+    <td align="center"><if condition="($vo['status'] eq 1)"><span style="color:green;">显示</span><else />不显示</if></td>
+	<td align="center">
+      <a href="__URL__/insert/id/{$vo['id']}">修改</a>|
+      <a href="__URL__/del/id/{$vo['id']}" onClick="return confirm('确定删除该记录吗?')">删除</a>      
+    </td>
+	</tr>
+    <volist name="vo.sub_node" id="sub_vo">
+	<tr>
+	<td align="center"><input type="checkbox" name="id[]" value="{$sub_vo['id']}" id="id"></td>	
+    <td align="left"><input type=hidden name="ids[]" value="{$sub_vo['id']}"><input type="text" class="inputorder" val="{$sub_vo['id']}" name="sort[]" size="1" value="{$sub_vo['sort']}"></td>
+	<td align="left">|__ {$sub_vo['title']}</td>
+	<td align="left">{$sub_vo['name']}</td>    
+    <td align="center"><if condition="($sub_vo['status'] eq 1)"><span style="color:green;">显示</span><else />不显示</if></td>
+	<td align="center">
+      <a href="__URL__/insert/id/{$sub_vo['id']}">修改</a>|
+      <a href="__URL__/del/id/{$sub_vo['id']}" onClick="return confirm('确定删除该记录吗?')">删除</a>      
+    </td>
+	</tr>
+	</volist>	
+   </volist>	
+  </tbody>
+ </table>
+	<div class="btn" style="font-size:12px;">
+   <label for="check_box" id ="CheckedRev">
+    <a href="javascript:selAll()" class="coolbg">全选</a>&nbsp;
+	<a href="javascript:noSelAll()" class="coolbg">取消</a> 
+    </label> &nbsp;&nbsp;   
+        <input type="submit" name="act" value="排序" class="coolbg" onClick="document.myform.action='?m=Node&a=act&action=order';"/>&nbsp;
+        <input type="submit" name="act" value="删除" class="coolbg" onClick="delet()"/>
+        &nbsp;&nbsp;<div id="pages"> {$page}</div>
+	   </div>
+</form>
+</div>
+</div>
+</div>
+<script src="__PUBLIC__/Js/jquery.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$(".inputorder").change(function () {
+	    var id = $(this).attr('val');
+	    var o = $(this).val();
+	    if (id != o) {
+	        $.post("{:U('ajax_sort')}", {id: id, o: o}, function (data) {
+	            if (data == 1) {
+	                window.location.reload(true);
+	            }
+	        }
+	    )
+	        ;
+	    }
+	})
+})
+</script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>添加友情链接</title>
+<link href="__PUBLIC__/admin/style.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/admin/system.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="__PUBLIC__/kindeditor/themes/default/default.css" />
+<script type="text/javascript" src="__PUBLIC__/Js/jquery-1.4.3.min.js"></script>
+<script charset="UTF-8" src="__PUBLIC__/kindeditor/kindeditor-min.js"></script>
+<script charset="UTF-8" src="__PUBLIC__/kindeditor/lang/zh_CN.js"></script>
+</head>
+<script>
+			KindEditor.ready(function(K) {
+				var editor = K.editor({
+					allowFileManager : true
+				});
+				K('#image').click(function() {
+					editor.loadPlugin('image', function() {
+						editor.plugin.imageDialog({
+							imageUrl : K('#logo').val(),
+							clickFn : function(url, title, width, height, border, align) {
+								K('#logo').val(url);
+								editor.hideDialog();
+							}
+						});
+					});
+				});
+			});
+		</script>
+<style type="text/css"> 
+<!-- 
+body { font:12px/19px Arial, Helvetica, sans-serif; color:#666;}
+form div { margin:5px 0;}
+.int label { float:left; width:100px; text-align:right;}
+.int input { padding:1px 1px; border:1px solid #ccc;height:16px;}
+.sub { padding-left:100px;}
+.sub input { margin-right:10px; }
+.formtips{width: 200px;margin:2px;padding:2px;}
+.onError{
+    background:#FFE0E9 url(../img/reg3.gif) no-repeat 0 center;
+	padding-left:25px;
+}
+.onSuccess{
+    background:#E9FBEB url(../img/reg4.gif) no-repeat 0 center;
+	padding-left:25px;
+}
+.high{
+    color:red;
+}
+.subnav{
+	 /*padding:10px;*/
+	 border-style: solid;
+     border-bottom-width: 3px;
+	 border-bottom-color:#EEEEEE;  
+}.subnav h2{ margin-bottom:6px}
+--> 
+</style> 
+<script type="text/javascript">
+//<![CDATA[
+$(function(){
+		//如果是必填的，则加红星标识.
+		$("form :input.required").each(function(){
+			var $required = $("<strong class='high'> *</strong>"); //创建元素
+			$(this).parent().append($required); //然后将它追加到文档中
+		});
+        
+	    $('form :input').blur(function(){
+			 var $parent = $(this).parent();
+			 $parent.find(".formtips").remove();
+			 //验证用户名
+			 if( $(this).is('#title') ){
+					if( this.value==""){
+					    var errorMsg = '标题不能为空.';
+                        $parent.append('<span class="formtips onError">'+errorMsg+'</span>');
+
+					}else{
+					    var okMsg = '<img src="__PUBLIC__/Css/Admin/images/reg4.gif" width="22" height="22" />';
+					    $parent.append('<span class="formtips onSuccess">'+okMsg+'</span>');
+					}
+			 }
+			 if( $(this).is('#content') ){
+					if( this.value==""){
+					    var errorMsg = '内容不能为空.';
+                        $parent.append('<span class="formtips onError">'+errorMsg+'</span>');
+					}else{
+					    var okMsg = '<img src="__PUBLIC__/Css/Admin/images/reg4.gif" width="22" height="22" />';
+					    $parent.append('<span class="formtips onSuccess">'+okMsg+'</span>');
+					}
+			 }
+			 
+		}).keyup(function(){
+		   $(this).triggerHandler("blur");
+		}).focus(function(){
+	  	   $(this).triggerHandler("blur");
+		});//end blur
+		//重置
+		 $('#res').click(function(){
+				$(".formtips").remove(); 
+		 });
+})
+//]]>
+</script>
+<body>
+<div style="border:1px solid #C8DAA3;">
+ <div>
+    <div style="background:#EEF5DE;height:20px;padding-top: 5px;">
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;">当前位置:链接&nbsp;>&nbsp;编辑</span>
+    </div>
+   
+</div>
+<div style="border:1px solid #C8DAA3;margin-bottom:5px;">
+ <div>
+    <div style="background:#FFFFFF;height:20px;margin-bottom:5px;"><p>
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;">
+   <a href="__URL__/index" style="text-decoration:none;" target="main" title="管理列表">管理列表</a>
+   </span>|
+  <span style="margin-right:5px;margin-left:5px;font-size:12px;">
+   <a href="__URL__/insert" style="text-decoration:none;" target="main" title="添加链接">添加链接</a>
+   </span>|
+   <a href="__URL__/edit"  target="main" title="编辑链接" style="text-decoration:none;color:#333">
+   <span style="margin-right:5px;margin-top:5px;margin-left:10px;padding: 3px;font-size:12px;background-color:#618d01;color:#fff;">
+   编辑链接</span></a>
+    </div>
+   <hr style="margin-right:10px;margin-left:10px;color:#EEEEEE;"/>
+</div>
+<div class="table-list">
+    <form action="__URL__/edit" method="POST" >
+    <table width="100%" cellspacing="0" style="font-size:12px;">
+       <tbody>
+             <tr>
+            <td width="100" align="center">链接类型:</td>
+            <td align="left">
+             
+     文字链接：<input type="radio" name="linktype" value="1" onclick="document.all.dosubmit.click()" <if condition="$linktype eq 1"> checked </if> >
+     LOGO链接：<input type="radio" name="linktype" value="2" onclick="document.all.dosubmit.click()" <if condition="$linktype eq 2"> checked </if> >
+           <input type=hidden name="id" value="{$vo['id']}">
+           <input  type="submit" style="display: none;" name='dosubmit' class="button" value="提交" />
+            </td>	
+            </tr>
+     </form>
+    <form action="__URL__/update" method="POST" >
+            <tr>
+            <td width="100" align="center">站名:</td>
+            <td align="left">
+            <input type="text" name="name" id="name" class="required" size="30" value="{$vo['name']}">
+            </td>	
+            </tr>
+            <tr>
+            <td width="50" align="center">网址：</td>
+            <td align="left">
+            <input type="text" name="url" size="30" value="{$vo['url']}">
+            </td>	
+            </tr>
+            <if condition="$linktype eq 2">   
+            <tr>
+            <td width="50" align="center">LOGO：</td>
+            <td align="left">
+           <input type="text" name="logo" id="logo" value="" size="50" value="{$vo['logo']}"/>  &nbsp;
+           <input type="button" id="image" value="上传图片" />
+            </td>	
+            </tr>
+            </if>
+            <tr>
+            <td width="100" align="center">网站联系人:</td>
+            <td align="left">
+            <input type="text" name="linkman" id="linkman"  size="30" value="{$vo['linkman']}">
+            </td>	
+            </tr>
+            <tr>
+            <td width="50" align="center">备注：</td>
+            <td align="left">
+           <textarea name="introduce" rows="3" cols="60">{$vo['introduce']}</textarea>
+            </td>	
+            </tr>
+             
+       </tbody>
+    
+ </table>
+	<div class="btn" style="font-size:12px;">
+           <input type=hidden name="id" value="{$vo['id']}">
+          <input type="submit" value="提交"  id="send" class="button" style="margin-left: 450px;">&nbsp;&nbsp;
+		 <input  type="button" onClick="history.back()" class="button" value="取 消" alt="取消" />
+	   </div>
+</form>
+</div>
+</div>
+</div>
+</body>
+</html>
+

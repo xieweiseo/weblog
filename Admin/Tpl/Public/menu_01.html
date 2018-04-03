@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<link rel="stylesheet" href="__PUBLIC__/admin/menu.css" type="text/css" />               
+<script language=javascript id=clientEventHandlersJS>
+<!--
+var number=4;
+function LMYC() {
+var lbmc;
+//var treePic;
+    for (i=1;i<=number;i++) {
+        lbmc = eval('LM' + i);
+        //treePic = eval('treePic'+i);
+        //treePic.src = 'images/file.gif';
+        lbmc.style.display = 'none';
+    }
+}
+ 
+function ShowFLT(i) {
+    lbmc = eval('LM' + i);
+    //treePic = eval('treePic' + i)
+    if (lbmc.style.display == 'none') {
+        LMYC();
+        //treePic.src = 'images/nofile.gif';
+        lbmc.style.display = '';
+    }
+    else {
+        //treePic.src = 'images/file.gif';
+        lbmc.style.display = 'none';
+    }
+}
+//-->
+</script>          
+<style type="text/css"> 
+<!-- 
+.menu{
+margin:0 auto;  
+padding-left:5px;padding-top:8px;
+padding-right:5px;
+}
+--> 
+</style> 
+</head>
+<body target="main">
+<div class="menu">
+    <!-- Item 1 Strat -->
+      <dl class="bitem">
+        <A onclick=javascript:ShowFLT(1) href="javascript:void(null)"><dt><b>内容管理</b></dt></A>
+        <dd class="sitem" id="LM1">
+           <ul class="sitemu" style="display:block">
+             <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/News/index"  target="main" title="文章管理">文章管理</a></div>								        
+              </div>
+            </li>
+            <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/Blog/index" target="main" title="博客管理">博客管理</a></div>								        
+              </div>
+            </li>
+             <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/Picture/index" target="main" title="图片管理">图片管理</a></div>								
+              </div>
+            </li>
+             <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/Download/index" target="main" title="下载管理">下载管理</a></div>								
+              </div>
+            </li>
+             <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/Columns/index" target="main" title="单页附件">栏目管理</a></div>								        
+              </div>
+            </li>
+             <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/Tag/index" target="main" title="单页附件">标签管理</a></div>								        
+              </div>
+            </li>
+             <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/Page/index" target="main" title="单页管理">单页管理</a></div>								        
+              </div>
+            </li>
+             <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/Attach/index" target="main" title="单页附件">附件管理</a></div>								        
+              </div>
+            </li>
+             <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/Tpl/index" target="main" title="模板管理">模板管理</a></div>								        
+              </div>
+            </li>
+           <!-- <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/Company/insert" target="main" title="酒店信息">酒店信息</a></div>								        
+              </div>
+            </li>-->
+             <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/Clear/index" target="main" title="缓存管理">缓存管理</a></div>								        
+              </div>
+            </li>
+           
+              
+          </ul>
+          
+        </dd>
+      </dl>
+      <!-- Item 1 End -->
+     <!-- Item 3 Strat -->
+      <dl class="bitem">
+        <A onclick=javascript:ShowFLT(2) href="javascript:void(null)"><dt><b>模块管理</b></dt></A>
+        <dd  class="sitem" >
+          <ul class="sitemu" style="display:<if condition="$var eq 'module'">block <else/>none</if>" id="LM2">
+             <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/Guestbook/index"  target="main" title="留言管理">留言管理</a></div>								        
+              </div>
+            </li>
+             <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/Comment/index"  target="main" title="评论管理">评论管理</a></div>								        
+              </div>
+            </li>
+             <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/Link/index" target="main" title="友情链接">友情链接</a></div>								        
+              </div>
+            </li>
+             <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/Announce/index"  target="main" title="公告管理">公告管理</a></div>								        
+              </div>
+            </li>
+             <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/Banner/index" target="main" title="广告管理">广告管理</a></div>								        
+              </div>
+            </li>
+             
+          </ul>
+        </dd>
+      </dl>
+      <!-- Item 3 End -->
+    
+       <!-- Item 1 Strat -->
+      <dl class="bitem">
+        <A href="javascript:void(null)" onclick=javascript:ShowFLT(3) ><dt><b>系统管理</b></dt></A>
+        <dd class="sitem" >
+          <ul class="sitemu" style="display:<if condition="$var eq 'sysem'">block <else/>none</if>" id="LM3">
+              <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/Databakup/index" target="main" title="文档文件">数据备份</a></div>								        
+              </div>
+            </li>
+             <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/Public/main" target="main" title="系统信息">系统信息</a></div>								        
+              </div>
+            </li>
+             <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/Config/config" target="main" title="基本设置">基本设置</a></div>								        
+              </div>
+            </li>
+            <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/Clear/index" target="main" title="缓存管理">缓存管理</a></div>								        
+              </div>
+            </li>            
+          </ul>
+        </dd>
+      </dl>
+      <!-- Item 1 End -->
+      <!-- Item 2 Strat -->
+      <dl class="bitem">
+        <A href="javascript:void(null)" onclick=javascript:ShowFLT(4) ><dt><b>用户管理</b></dt></A>
+        <dd  class="sitem" >
+          <ul class="sitemu" style="display:none" id="LM4">
+            <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/Public/password"  target="main" title="修改密码">修改密码</a></div>								        
+              </div>
+            </li>
+            <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/User/index"  target="main" title="会员管理"><font color=red>用户列表</font></a></div>								        
+              </div>
+            </li>
+            <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/User/insert"  target="main" title="添加会员">添加用户</a></div>								        
+              </div>
+            </li>
+            <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/Node/index"  target="main" title="节点管理">节点管理</a></div>								        
+              </div>
+            </li>
+            <li>
+              <div class="items">
+                <div class="fllct"><a href="__GROUP__/Role/index"  target="main" title="角色管理">角色管理</a></div>								        
+              </div>
+            </li>
+          </ul>
+        </dd>
+      </dl>
+      <!-- Item 2 End -->
+	  
+	 </div>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>添加友情链接</title>
+<link href="__PUBLIC__/admin/style.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/admin/system.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="__PUBLIC__/kindeditor/themes/default/default.css" />
+<script type="text/javascript" src="__PUBLIC__/Js/jquery-1.4.3.min.js"></script>
+<script language="javascript" type="text/javascript" src="__PUBLIC__/Js/formvalidator.js" charset="UTF-8"></script>
+<script language="javascript" type="text/javascript" src="__PUBLIC__/Js/formvalidatorregex.js" charset="UTF-8"></script>
+<script type="text/javascript">
+$(function(){
+	$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+	$("#url").formValidator({onshow:"请填写url",onfocus:"请填写url"}).inputValidator({min:1,max:50,onerror:"url不能为空"});
+	$("#name").formValidator({onshow:"站名不能为空",onfocus:"站名不能为空"}).inputValidator({min:1,max:50,onerror:"站名不能为空"});
+	
+	
+	
+});
+</script>
+</head>
+
+<body>
+<div style="border:1px solid #C8DAA3;">
+ <div>
+    <div style="background:#EEF5DE;height:20px;padding-top: 5px;">
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;">当前位置:链接&nbsp;>&nbsp;添加</span>
+    </div>
+   
+</div>
+<div style="border:1px solid #C8DAA3;margin-bottom:5px;">
+ <div>
+    <div style="background:#FFFFFF;height:20px;margin-bottom:5px;"><p>
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;">
+   <a href="__URL__/index" style="text-decoration:none;" target="main" title="管理列表">管理列表</a>
+   </span>|
+   <a href="__URL__/insert"  target="main" title="添加链接" style="text-decoration:none;color:#333">
+   <span style="margin-right:5px;margin-top:5px;margin-left:10px;padding: 3px;font-size:12px;background-color:#618d01;color:#fff;">
+   添加链接</span></a>
+    </div>
+   <hr style="margin-right:10px;margin-left:10px;color:#EEEEEE;"/>
+</div>
+<div class="table-list">
+    <form action="__URL__/insert" method="POST" >
+    <table width="100%" cellspacing="0" style="font-size:12px;">
+       <tbody>
+             <tr>
+            <td width="100" align="right">链接类型：</td>
+            <td align="left">
+             
+     文字链接：<input type="radio" name="linktype" value="1" onclick="document.all.dosubmit.click()"  <if condition="$linktype eq 1"> checked </if> >
+     LOGO链接：<input type="radio" name="linktype" value="2" onclick="document.all.dosubmit.click()" <if condition="$linktype eq 2"> checked </if> >
+           <input  type="submit" style="display: none;" name='dosubmit' class="button" value="提交" />
+            </td>	
+            </tr>
+     </form>
+    <form action="__URL__/add" method="POST" id="myform" >
+            <tr>
+            <td width="100" align="right">站名：</td>
+            <td align="left">
+            <input type="text" name="name" id="name" class="required" size="30">
+            </td>	
+            </tr>
+            <tr>
+            <td width="100" align="right">网址：</td>
+            <td align="left">
+            <input type="text" name="url" id="url" size="30">
+            </td>	
+            </tr>
+            <if condition="$linktype eq 2">   
+            <tr>
+            <td width="50" align="right">LOGO：</td>
+            <td align="left">
+             <input type="text" name="logo" id="logo" value="" size="50" />  &nbsp;<input type="button" id="image" value="上传图片" />
+            </td>	
+            </tr>
+            </if>
+            <tr>
+            <td width="100" align="right">网站联系人：</td>
+            <td align="left">
+            <input type="text" name="linkman" id="linkman"  size="30">
+            </td>	
+            </tr>
+            <tr>
+            <td width="50" align="right">备注：</td>
+            <td align="left">
+           <textarea name="introduce" rows="3" cols="60"></textarea>
+            </td>	
+            </tr>
+             
+       </tbody>
+    
+ </table>
+	<div class="btn" style="font-size:12px;">
+          <input type="submit" value="提交"  id="send" class="button" style="margin-left: 450px;">&nbsp;&nbsp;
+		 <input  type="button" onClick="history.back()" class="button" value="取 消" alt="取消" />
+	   </div>
+</form>
+</div>
+</div>
+</div>
+</body>
+</html>
+

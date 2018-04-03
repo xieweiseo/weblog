@@ -1,0 +1,100 @@
+<include file="Public:header" />
+<!--代码高亮显示调试-->
+<!-- <script type="text/javascript" src="{$Think.config.rooturl}Public/SyntaxHighlighter/scripts/shCore.js"></script> -->
+<!-- <link rel="stylesheet" type="text/css" href="{$Think.config.rooturl}Public/SyntaxHighlighter/style/shCore.css"> -->
+<!--代码高亮显示调试-->
+<body>
+<div>
+ <div>
+    <div style="background:#EEF5DE;height:20px;padding-top: 5px;">
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;">当前位置:文章>修改</span>
+    </div>
+   
+</div>
+<div style="border:1px solid #C8DAA3;">
+ <div>
+    <div style="background:#FFFFFF;height:25px;margin-bottom:5px;">
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;"><a href="__URL__/index"  target="main" title="管理列表">管理列表</a></span>|
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;"><a href="__URL__/insert"  target="main" title="添加内容">添加内容</a></span>
+    </div>
+   <hr />
+</div>
+<div class="table-list">
+     <form action="__URL__/update" method="POST" id="myform">
+    <table width="100%" cellspacing="0" style="font-size:12px;">
+       <tbody>
+            <tr>
+            <td width="50" align="center">栏目:</td>
+            <td align="left">
+            <select name="catid" id="catid">
+                       <option value="0" selected>请选择栏目 </option>
+                       <option value="0" selected>作为顶级栏目 </option>
+			          <volist name="catlist" id="cat">
+			          <if condition="$vo['catid'] eq $cat['colId']"> 
+			         <option value="{$cat['colId']}" selected>{$cat['space']}{$cat['colTitle']} </option>
+				      <else />   
+			         <option value="{$cat['colId']}"> {$cat['space']}{$cat['colTitle']} </option>
+			       </if>
+			
+                     </volist>
+				     </select>
+            </td>	
+            </tr>
+            <tr>
+            <td width="50" align="center">标题：</td>
+            <td align="left">
+            <input type="text" name="title" value="{$vo.title}" id="title" size="50">
+            </td>	
+            </tr>
+            <tr>
+            <td width="50" align="center">关键词：</td>
+            <td align="left">
+           <input type="text" name="keywords" value="{$vo.keywords}" size="50">
+            </td>	
+            </tr>
+             <tr>
+            <td width="50" align="center">缩略图：</td>
+            <td align="left">
+           <input type="text" name="thumb" id="thumb" value="{$vo.thumb}" size="50"/>  &nbsp;<input type="button" id="image" value="上传图片" />
+            </td>	
+            </tr>
+             <tr>
+            <td width="50" align="center">描述：</td>
+            <td align="left">
+          <textarea name="description" rows="3" cols="60" >{$vo.description}</textarea>
+            </td>	
+            </tr>
+             <tr>
+            <td width="50" align="center">内容：</td>
+            <td align="left">
+           <textarea name="content" id="content"  style="width:800px;height:250px;visibility:hidden;" class="required">{$vo.content}</textarea>
+            </td>	
+            </tr>
+             <tr>
+            <td width="50" align="center"></td>
+            <td align="left">
+            推荐：
+            <if condition="$vo['posid'] eq 1"> 
+            <input type="checkbox" name="posid" value="1" checked>
+            <else />   
+			<input type="checkbox" name="posid" value="1" >
+			</if>
+            </td>	
+            </tr>
+       </tbody>
+    
+ </table>
+	<div class="btn" style="font-size:12px;">
+           <input type=hidden name="id" value="{$vo.id}">
+          <input type="submit"  name="dosubmit" value="提交" id="send" class="button" style="margin-left: 450px;">&nbsp;&nbsp;
+		 <input  type="button" onClick="history.back()" class="button" value="取 消" alt="取消" />
+	   </div>
+</form>
+</div>
+</div>
+</div>
+</body>
+<!-- <script> $(function(){ prettyPrint(); }); </script>  -->
+
+</html>
+

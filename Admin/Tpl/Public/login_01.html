@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>wBlog博管系统 by www.w3note.com</title>
+<!--<link href="__PUBLIC__/Css/index.css" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript" src="__PUBLIC__/Js/formvalidatorregex.js" charset="UTF-8"></script>
+-->
+<link href="__PUBLIC__/admin/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="__PUBLIC__/Js/jquery.js"></script>
+<script language="javascript" type="text/javascript" src="__PUBLIC__/Js/formvalidator.js" charset="UTF-8"></script>
+
+<script type="text/javascript">
+$(function(){
+	$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});	
+	$("#AdminName").formValidator({onshow:"输入用户名",onfocus:"输入用户名"}).inputValidator({min:1,max:50,onerror:"用户名不能为空"});
+	$("#adminpwd").formValidator({onshow:"输入密码",onfocus:"输入密码"}).inputValidator({min:1,max:50,onerror:"密码不能为空"}); 
+	$("#verify").formValidator({onshow:"输入验证码",onfocus:"输入验证码"}).inputValidator({min:1,max:50,onerror:"验证码不能为空"}); 	
+});
+</script>
+<style type="text/css"> 
+<!-- 
+#form { width: 650px;}
+#form { margin:0 auto;   }
+form {	
+	margin: 0;
+	padding: 0;
+}
+
+div.fieldset {
+	border:  1px solid #afe14c;
+	margin: 10px 0;
+	padding: 20px 10px;
+}
+div.fieldset span.legend {
+	position: relative;
+	background-color: #FFF;
+	padding: 3px;
+	top: -30px;
+	font: 700 14px Arial, Helvetica, sans-serif;
+	color: #73b304;
+}
+
+input{ 
+	border-width: 1px; 
+	margin-bottom: 10px;
+	padding: 2px 3px;
+	color:green;
+}
+
+
+
+input[disabled]{ border: 1px solid #ccc } /* FF 2 Fix */
+
+
+label { 
+	width: 230px; 
+	text-align: right; 
+	display:block;
+	margin-right: 5px;
+}
+
+#dosubmit { margin: 0 0 0 300px ; }
+
+/* -- Table Styles ------------------------------- */
+td {
+	font: 10pt Helvetica, Arial, sans-serif;
+	vertical-align: top;
+}
+--> 
+</style> 
+
+
+</head>
+
+<body>
+<div id="form">
+
+
+	<form action="__URL__/checkLogin" method="post" onsubmit="return chk();" id="myform">
+		<p>&nbsp;</p>
+		<div class="fieldset">
+			<span class="legend">wBlog博客管理系统</span>
+            <div id="result" class="none result" style="font-family:微软雅黑,Tahoma;margin-bottom: 10px;font-size:18px;color:green;text-align:center"></div>
+			<table style="vertical-align:top;">
+				<tr>
+					<td><label for="lastname">用户名:</label></td>
+					<td><input name="username" id="AdminName" type="text" style="width: 180px" /></td>
+				</tr>
+				<tr>
+					<td><label for="firstname">密&nbsp;&nbsp;&nbsp;&nbsp;码:</label></td>
+					<td><input type="password" name="password" id="adminpwd" style="width: 180px" /></td>
+				</tr>	
+                <tr>
+					<td><label for="firstname">验证码:</label></td>
+					<td>
+                    <input name="verify" type="text" class="lyform"  id="verify" style="width: 80px" maxlength="5"/>&nbsp;&nbsp;
+                    <img src="__URL__/verify/" border="0" alt="看不清楚请点击刷新验证码" style="cursor : pointer;width:60px;height:20px;" onclick="show(this)"/>
+                    </td>
+				</tr>	
+                 
+			</table>
+			<br />
+             <input type="hidden" name="nid" value="{$vo.id}" id="nid" />
+			<input type="submit"  id="dosubmit" value="登录"  />
+		</div>
+	</form>
+</div>
+<script>
+function show(obj){
+obj.src="__URL__/verify/random/"+Math.random();
+}
+</script>
+</body>
+</html>

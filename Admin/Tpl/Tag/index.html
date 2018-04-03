@@ -1,0 +1,92 @@
+<include file="Public:indexheader" />
+
+<body>
+<div style="border:1px solid #C8DAA3;">
+ <div>
+    <div style="background:#EEF5DE;height:20px;padding-top: 5px;">
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;">
+   当前位置：
+       
+         <a href="__APP__/index">标签管理</a>
+        
+   </span>
+    </div>
+   
+   
+   
+</div>
+<div style="border:1px solid #C8DAA3;">
+ <div>
+        <div style="background:#FFFFFF;height:20px;margin-bottom:5px;"><p>
+    <a href="__URL__/index"  target="main" title="标签管理" style="text-decoration:none;color:#333">
+   <span style="margin-right:5px;margin-top:5px;margin-left:10px;padding: 3px;font-size:12px;background-color:#618d01;color:#fff;">
+   标签管理</span></a>
+   
+    </div>
+   <hr style="margin-right:10px;margin-left:10px;color:#EEEEEE;"/>
+</div>
+<div class="pad_10" style="margin-right:10px;margin-left:10px;font-size:12px;">
+<div id="searchid">
+   <table width="100%" cellspacing="0" class="search-form">
+    <tbody>
+	  <tr>
+		<td>
+		<div style="border:1px solid #ffbe7a;zoom:1; background: #fffced; padding:8px 10px; line-height:20px;">
+		温馨提示：
+		</div>
+		</td>
+	 </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="table-list">
+     <form name="myform" action="__URL__/act" id="myform" method="POST">
+    <table width="100%" cellspacing="0" style="font-size:12px;">
+        <thead>
+            <tr>
+            
+			<th width="50" align="center">选取</th>
+			<th align="center">ID</th>
+            <th align="center">标签名称</th>
+													
+			<th align="center">所属模型</th>
+			
+			<th  align="center">管理操作</th>			
+			
+            </tr>
+        </thead>
+    <tbody> 
+       <volist name="lists" id="vo">
+	<tr>
+	<td align="center"><input type="checkbox" name="id[]" value="{$vo['id']}" id="id"></td>	
+	<td align="center">{$vo['id']}</td>
+	<td align="center"><a href="{$Think.config.rooturl}web/tag/name/{$vo['name']|urlencode}"><span style="font-size:{16|getTitleSize};color:{$vo['id']|rand_color}">&nbsp;&nbsp;{$vo['name']}[{$vo['count']}]</span></a></td>
+
+    <td align="center">{$vo['module']}</td>
+
+	<td align="center"> 
+    <a  href="__URL__/del/id/{$vo['id']}" onClick="return confirm('确定删除该标签吗?')">删除</a>   
+      
+    </td>	
+	</tr>
+	 </volist>	
+  </tbody>
+ </table>
+	<div class="btn" style="font-size:12px;">
+      <label for="check_box" id ="CheckedRev">
+       <a href="javascript:selAll()" class="coolbg">全选</a>&nbsp;
+	   <a href="javascript:noSelAll()" class="coolbg">取消</a> 
+       </label> &nbsp;&nbsp;
+     <input type="submit" name="act" value="删除" class="coolbg" onClick="return confirm('确定删除该记录吗?')"/>
+        <input  type="button" onClick="history.back()" class="button" style="margin-left: 400px;" value="返回" alt="返回" />	
+        &nbsp;&nbsp;<div id="pages"> {$page}</div>
+	   </div>
+</form>
+</div>
+</div>
+</div>
+</body>
+</html>
+

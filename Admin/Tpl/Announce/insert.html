@@ -1,0 +1,82 @@
+<include file="Public:kindeditorheader" />
+<script type="text/javascript">
+$(function(){
+	$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+	$("#url").formValidator({onshow:"请填写url",onfocus:"请填写url"}).inputValidator({min:1,max:50,onerror:"url不能为空"});
+	$("#title").formValidator({onshow:"请填写标题",onfocus:"请填写标题"}).inputValidator({min:1,max:50,onerror:"标题不能为空"});
+});
+</script>
+</head>
+<script>
+			
+			var editor;
+			KindEditor.ready(function(K) {
+				editor = K.create('textarea[name="content"]', {
+					resizeType : 1,
+					allowPreviewEmoticons : false,
+					allowImageUpload : false,
+					items : [
+						'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+						'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+						'insertunorderedlist', '|', 'emoticons', 'image', 'link']
+				});
+			});
+		</script>
+
+<body>
+<div style="border:1px solid #C8DAA3;">
+ <div>
+    <div style="background:#EEF5DE;height:20px;padding-top: 5px;">
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;">当前位置:链接&nbsp;>&nbsp;添加</span>
+    </div>
+   
+</div>
+<div style="border:1px solid #C8DAA3;margin-bottom:5px;">
+ <div>
+    <div style="background:#FFFFFF;height:20px;margin-bottom:5px;"><p>
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;">
+   <a href="__URL__/index" style="text-decoration:none;" target="main" title="管理列表">管理列表</a>
+   </span>|
+   <a href="__URL__/insert"  target="main" title="添加公告" style="text-decoration:none;color:#333">
+   <span style="margin-right:5px;margin-top:5px;margin-left:10px;padding: 3px;font-size:12px;background-color:#618d01;color:#fff;">
+   添加公告</span></a>
+    </div>
+   <hr style="margin-right:10px;margin-left:10px;color:#EEEEEE;"/>
+</div>
+<div class="table-list">
+     <form action="__URL__/add" method="POST" id="myform">
+    <table width="100%" cellspacing="0" style="font-size:12px;">
+       <tbody>
+            <tr>
+            <td width="50" align="center">标题：</td>
+            <td align="left">
+            <input type="text" name="title" id="title" class="required" size="50">
+            </td>	
+            </tr>
+            <tr>
+            <td width="50" align="center">url：</td>
+            <td align="left">
+           <input type="text" name="url" size="50" id="url">
+            </td>	
+            </tr>
+             <tr>
+            <td width="50" align="center">内容：</td>
+            <td align="left">
+           <textarea name="content" id="content"  style="width:600px;height:150px;visibility:hidden;" class="required"></textarea>
+            </td>	
+            </tr>
+             
+       </tbody>
+    
+ </table>
+	<div class="btn" style="font-size:12px;">
+          <input type="submit" value="提交" id="send" class="button" style="margin-left: 300px;">&nbsp;&nbsp;
+		 <input  type="button" onClick="history.back()" class="button" value="取 消" alt="取消" />
+	   </div>
+</form>
+</div>
+</div>
+</div>
+</body>
+</html>
+

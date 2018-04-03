@@ -1,0 +1,131 @@
+div {
+	padding:0px;
+	margin:0px;
+}
+
+body {
+ scrollbar-base-color:#bae87c;
+ scrollbar-arrow-color:#FFFFFF;
+ scrollbar-shadow-color:#c1ea8b;
+ padding:0px;
+ margin:auto;
+ text-align:center;
+ background-color:#EEF5DE;
+}
+
+dl.bitem {
+	margin:0 auto;
+	margin:0px 0px 5px 4px;
+}
+
+dl.bitem dt {
+  background:url(./images/menubg.gif) no-repeat;
+  height:26px;
+  line-height:26px;
+  text-align:center;
+  cursor:pointer;
+}
+
+dl.bitem dd {
+  padding:3px 3px 3px 3px;
+  background-color:#fff;
+}
+
+.fllct
+{
+	float:left;
+	
+	width:90px;
+}
+
+.flrct
+{
+	padding-top:3px;
+	float:left;
+}
+
+div.items
+{
+	line-height:22px;
+	background:url(./images/arr4.gif) no-repeat 10px 9px;
+}
+
+span.items
+{
+	padding:10px 0px 10px 22px;
+	background:url(./images/arr4.gif) no-repeat 10px 12px;
+}
+
+ul {
+  padding-top:3px;
+}
+
+li {
+  height:22px;
+}
+
+.sitemu li {
+	padding:0px 0px 0px 22px;
+	line-height:24px;
+	background:url(./images/arr4.gif) no-repeat 10px 9px;
+}
+.sitemu li:hover{
+	
+	background:#f5f5dc url(./images/enter.gif) no-repeat 10px 9px;
+	}
+	
+#active{
+	background:#f5f5dc url(./images/enter.gif) no-repeat 10px 9px;
+}
+
+/*------------------------------------------------------------------------------*/
+* {
+	font-size: 12px;
+	font-family: "宋体";
+}
+
+td { line-height: 1.5; }
+
+
+
+form,h1,h2,h3,ul,ol,div{	margin: 0; padding:0;}
+
+td,th,div {
+	word-break:break-all;
+	word-wrap:break-word;
+}
+
+b,strong {
+	color:#666600;
+}
+
+li,dd {
+  list-style-type:none; margin:0px; padding:0px; 
+}
+
+
+
+h1 { color:#171B16; font-size:130%; font-weight:bold; }
+h2 { color:#171B16; font-size:115%; font-weight:bold; }
+h3 { color:#171B16; font-size:100%; font-weight:bold;}
+
+a:link { font-size: 9pt; color: #000000; text-decoration: none; font-family: ""宋体""; }
+a:visited{ font-size: 9pt; color: #000000; text-decoration: none; font-family: ""宋体""; }
+a:hover {color: red; font-family: ""宋体"";}
+a img { border-style:none; }
+
+b a {
+	color:#666600;
+}
+strong a {
+	color:#666600;
+}
+
+a b{
+	color:#666600;
+}
+a strong{
+	color:#666600;
+}
+
+

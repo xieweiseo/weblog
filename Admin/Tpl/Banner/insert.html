@@ -1,0 +1,167 @@
+<include file="Public:kindeditorheader" />
+<link rel="stylesheet" href="__PUBLIC__/kindeditor/themes/default/default.css" />
+
+<script type="text/javascript">
+$(function(){
+	$.formValidator.initConfig({autotip:true,formid:"myform",onerror:function(msg){}});
+	$("#name").formValidator({onshow:"请填写名称",onfocus:"请填写名称"}).inputValidator({min:1,max:50,onerror:"名称不能为空"});
+	
+	
+	
+});
+</script>
+
+<script>
+			KindEditor.ready(function(K) {
+				var editor = K.editor({
+					allowFileManager : true
+				});
+				K('#image').click(function() {
+					editor.loadPlugin('image', function() {
+						editor.plugin.imageDialog({
+							imageUrl : K('#banner').val(),
+							clickFn : function(url, title, width, height, border, align) {
+								K('#banner').val(url);
+								editor.hideDialog();
+							}
+						});
+					});
+				});
+			});
+		</script>
+
+<body>
+<div style="border:1px solid #C8DAA3;">
+ <div>
+    <div style="background:#EEF5DE;height:25px;margin-bottom:5px;">
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;">当前位置:文章>添加</span>
+    </div>
+   
+</div>
+<div style="border:1px solid #C8DAA3;">
+ <div>
+    <div style="background:#FFFFFF;height:25px;margin-bottom:5px;">
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;"><a href="__URL__/index"  target="main" title="管理列表">管理列表</a></span>|
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;"><a href="__URL__/insert"  target="main" title="添加内容">添加内容</a></span>
+    </div>
+   <hr />
+</div>
+<div class="pad_10" style="margin-right:10px;margin-left:10px;font-size:12px;">
+<div id="searchid">
+   <table width="100%" cellspacing="0" class="search-form">
+    <tbody>
+	  <tr>
+		<td>
+		<div style="border:1px solid #ffbe7a;zoom:1; background: #fffced; padding:8px 10px; line-height:20px;">
+		<form action="__URL__/insert" method="POST" id="myform1">
+             广告类型:
+            <select name="typeid"  onChange="document.all.dosubmit.click()">
+			<option value="0">请选择类型</option>
+			
+	       <if condition="$typeid eq 1">   
+			<option value="1" selected>
+				幻灯片
+			</option>
+            <option value="2">
+				图片
+			</option>
+            <option value="3" >
+				文字
+			</option>
+			<elseif condition="$typeid eq 2"/>
+			  
+			<option value="2" selected>
+				图片
+			</option>
+            <option value="1">
+				幻灯片
+			</option>
+            <option value="3">
+				文字
+			</option>
+			<elseif condition="$typeid eq 3"/>
+			<option value="3" selected>
+				文字
+			</option>
+            <option value="1">
+				幻灯片
+			</option>
+            <option value="2">
+				图片
+			</option>
+            <else />
+            <option value="1" >
+				幻灯片
+			</option>
+            <option value="2">
+				图片
+			</option>
+            <option value="3" >
+				文字
+			</option>
+			</if>
+           
+		    
+		  </select>	
+		
+          <input  type="submit" style="display: none;" name='dosubmit' class="button" value="搜索" />
+           </form>
+		</div>
+		</td>
+	 </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+<div class="table-list">
+     <form action="__URL__/add" method="POST" id="myform">
+    <table width="100%" cellspacing="0" style="font-size:12px;">
+       <tbody>
+        
+            <tr>
+            <td width="200" align="right">名称：</td>
+            <td align="left">
+            <input type="text" name="name" id="name" class="required" size="50">
+            </td>	
+            </tr>
+            <tr>
+            <if condition="$typeid eq 3">  
+            <td width="50" align="right">链接地址：</td>
+            <td align="left">
+           <input type="text" name="url" size="50">
+            </td>	
+            </tr>
+            </if>
+             <if condition="$typeid eq 2"> 
+            <tr>
+            <td width="50"align="right">图片广告：</td>
+            <td align="left">
+           <input type="text" name="banner" id="banner" value="" size="50" />  &nbsp;<input type="button" id="image" value="上传图片" />
+            </td>	
+            </tr>
+            </if>
+             <td width="50" align="right">google百度等广告代码：</td>
+            <td align="left">
+          <textarea name="advurl" rows="3" cols="60"></textarea>
+            </td>	
+            </tr>
+             <tr>
+            <td width="50" align="right">描述：</td>
+            <td align="left">
+           <textarea name="introduce" rows="3" cols="60"></textarea>
+            </td>	
+            </tr>
+             
+       </tbody>
+    
+ </table>
+	<div class="btn" style="font-size:12px;">
+          <input type="submit" value="提交" id="send" class="button" style="margin-left: 450px;">&nbsp;&nbsp;
+		 <input  type="button" onClick="history.back()" class="button" value="取 消" alt="取消" />
+	   </div>
+</form>
+</div>
+</div>
+</div>
+</body>
+</html>

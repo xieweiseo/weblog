@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>接口配置信息</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link href="__PUBLIC__/admin/style.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="__PUBLIC__/admin/css/ace.css" class="ace-main-stylesheet" id="main-ace-style"/>
+<style type="text/css">
+<!--
+body,div,ul,li{
+ margin:0 auto;
+ padding:0;
+}
+body{
+ font:12px "微软雅黑";
+ text-align:center;
+}
+a:link{
+ color:#000033;
+ text-decoration:none;
+}
+a:visited {
+ color:#000033;
+ text-decoration:none;
+}
+a:hover {
+ color: green;
+ text-decoration:underline;
+}
+div.fieldset {
+	border:  1px solid #afe14c;
+	margin: 10px 0;
+	padding: 20px 10px;
+}
+div.fieldset span.legend {
+	position: relative;
+	background-color: #FFF;
+	padding: 3px;
+	top: -30px;
+	font: 700 14px Arial, Helvetica, sans-serif;
+	color: #73b304;
+}
+ul{
+ list-style:none;
+}
+.main{
+ clear:both;
+ padding:8px;
+ text-align:center;
+}
+/*第一种形式*/
+#tabs0 {
+
+ width: 100%;
+ /*border: 1px solid #cbcbcb;*/
+ background-color: #fff;
+}
+.menu0{
+ width: 400px;
+}
+.menu0 li{
+ display:block;
+ float: left;
+ padding: 4px 0;
+ width:100px;
+ text-align: center;
+ cursor:pointer;
+ background: #EEF5DE;
+}
+.menu0 li.hover{
+ background: #fff;
+}
+#main0 ul{
+ display: none;
+}
+#main0 ul.block{
+ display: block;
+}
+#tap { width: 650px;margin:0 auto;}
+#form { margin:0 auto;   }
+-->
+</style>
+<script>
+<!--
+/*第一种形式 第二种形式 更换显示样式*/
+function setTab(m,n){
+ var tli=document.getElementById("menu"+m).getElementsByTagName("li");
+ var mli=document.getElementById("main"+m).getElementsByTagName("ul");
+ for(i=0;i<tli.length;i++){
+  tli[i].className=i==n?"hover":"";
+  mli[i].style.display=i==n?"block":"none";
+  mli[i].className=i==n?'block':"";
+ }
+}
+//-->
+</script>
+</head>
+<body>
+<div>
+   <div style="background:#EEF5DE;height:20px;text-align:left;padding-top: 5px;">
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;">当前位置 : 酒店管理 >接口信息</span>
+   </div>
+   
+</div>
+<div style="border:1px solid #C8DAA3;">
+<!--第一种形式-->
+<div id="tabs0">
+<div style="background:#EEF5DE;height:20px;margin-bottom:0px;">
+ </div>
+ <div class="main" id="main0">
+ <form action="__URL__/save" method="post">
+  <div class="fieldset">
+			<span class="legend">接口配置</span>
+            <div id="result" class="none result" style="font-family:微软雅黑,Tahoma;margin-bottom: 10px;font-size:18px;color:green;text-align:center"></div>
+            <div class="table-list">
+			<table width="100%" cellspacing="0" style="font-size:12px;">
+            <tbody>
+            
+            <tr>
+            <td width="100" align="right">广电号查询:<!-- <span class="red_font">*</span> --></td>
+            <td align="left">
+             <input type="text" name="device_code" class="inputbox" value="{$Think.config.device_code}" style="width:820px;"/>
+            </td>	
+            </tr>
+             <tr>
+            <td width="100" align="right">服务集查询:<!-- <span class="red_font">*</span> --></td>
+            <td align="left">
+            <input type="text" name="service_set" class="inputbox" value="{$Think.config.service_set}" style="width:820px;"/>
+            </td>	
+            </tr>
+             <tr>
+            <td width="100" align="right">面板查询:<!-- <span class="red_font">*</span> --></td>
+            <td align="left">
+             <input type="text" name="panel" class="inputbox" value="{$Think.config.panel}" style="width:820px;"/>
+            </td>	
+            </tr>                        
+       </tbody>    
+ 	   </table>
+		</div>	
+		</div>           
+       </tbody>			
+	  </div>	
+	</div>
+   
+<div class="btn" style="font-size:12px;">
+          <input type="submit" value="更新" id="send" class="button" style="margin-left: 20px;">&nbsp;&nbsp;
+		 <input  type="button" onClick="history.back()" class="button" value="返回" alt="返回" />
+	   </div>
+</form>
+</div>
+</body>
+</html> 

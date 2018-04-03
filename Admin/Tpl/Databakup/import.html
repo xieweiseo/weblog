@@ -1,0 +1,73 @@
+<include file="Public:indexheader" />
+<style type="text/css"> 
+<!-- 
+.subnav{
+	 /*padding:10px;*/
+	 border-style: solid;
+     border-bottom-width: 3px;
+	 border-bottom-color:#EEEEEE;  
+}.subnav h2{ margin-bottom:6px}
+--> 
+</style> 
+
+<body>
+<div style="border:1px solid #C8DAA3;">
+ <div>
+    <div style="background:#EEF5DE;height:20px;padding-top: 5px;">
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;">当前位置:数据库&nbsp;>&nbsp;数据库还原</span>
+    </div>
+   
+</div>
+<div style="border:1px solid #C8DAA3;">
+ <div>
+    <div style="background:#FFFFFF;height:25px;">
+   <span style="margin-right:5px;margin-left:10px;font-size:12px;"><a href="__URL__/index"  target="main" title="数据库备份">数据库备份</a></span>|
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;"><a href="__URL__/import"  target="main" title="数据库还原">数据库还原</a></span>
+    </div>
+   <hr style="margin-right:10px;margin-left:10px;color:#EEEEEE;"/>
+</div>
+
+<div class="table-list">
+    <table width="100%" cellspacing="0" style="font-size:12px;">
+        <thead>
+            <tr>
+            <th width="50" align="center">选取</th>
+			<th align="center">ID</th>
+			<th align="center">文件名</th>	
+            <th align="center">备份时间</th>    
+             <th align="center">卷号</th>       
+			<th align="center">导入</th>			
+            </tr>
+        </thead>
+    <tbody> 
+      <form name="myform" id="myform" method="post" action="__URL__/del">
+       <volist name="bfns" id="data">
+	<tr>
+	<td align="center"><input type="checkbox" name="id[]" value="{$data['bfn']}" id="id" /></td>	
+	<td align="center">{$data['id']}</td>
+	<td align="center">{$data['bfn']}</td>
+    <td align="center">
+       {$data['ct']}                  
+    </td>
+    <td align="center">
+       {$data['part']}      
+    </td>
+    <td align="center"><a href="__URL__/recovery/fn/{$data['bfn']}" onClick="return confirm('确定要还原数据?')"">导入</a></td>
+	</tr>
+	 </volist>	
+  </tbody>
+ </table>
+	<div class="btn" style="font-size:12px;">
+        <label for="check_box" id ="CheckedRev">
+    <a href="javascript:selAll()" class="coolbg">全选</a>&nbsp;
+	<a href="javascript:noSelAll()" class="coolbg">取消</a> 
+    </label> &nbsp;&nbsp;      
+      <input class="btn2" type="submit" name="sub" value="删除备份" onClick="return confirm('确定删除该备份吗?')")" />
+	   </div>
+</form>
+</div>
+</div>
+</div>
+</body>
+</html>
+

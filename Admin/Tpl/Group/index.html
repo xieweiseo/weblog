@@ -1,0 +1,87 @@
+<include file="Public:indexheader" />
+<style type="text/css">
+.subnav{border-style: solid;border-bottom-width: 3px;border-bottom-color:#EEEEEE;}
+.subnav h2{ margin-bottom:6px}
+</style> 
+<body>
+<div style="border:1px solid #C8DAA3;">
+ <div>
+    <div style="background:#EEF5DE;height:25px;padding-top: 5px;">
+     <span style="margin-right:5px;margin-left:5px;font-size:12px;">当前位置:分组>管理</span>
+    </div>   
+</div>
+<div style="border:1px solid #C8DAA3;">
+ <div>
+   <div style="background:#FFFFFF;height:25px;padding-top:5px;">
+    <span style="margin-right:5px;margin-left:5px;font-size:12px;"><a href="__URL__/index"  target="main" title="分组列表">分组列表</a></span>|
+    <span style="margin-right:5px;margin-left:5px;font-size:12px;"><a href="__URL__/add"  target="main" title="添加分组">添加分组</a></span>
+   </div>
+</div>
+<div class="pad_10">
+<div id="searchid">
+   <table width="100%" cellspacing="0" class="search-form">
+    <tbody>
+	  <tr>
+		<td>
+		<div style="border:1px solid #87b87f;zoom:1; background: rgba(255, 255, 255, 0.15); padding:5px 10px; line-height:20px;">		
+		</div>
+		</td>
+	 </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="table-list">
+    <form name="myform"  id="myform" action="__URL__/del" method="POST">
+    <table width="100%" cellspacing="0" style="font-size:12px;">
+        <thead>
+            <tr>
+            <th width="50" align="center">选取</th>
+			<th align="left">分组ID</th>
+			<th align="left">分组名</th>
+			<th align="center">管理操作</th>								
+            </tr>
+        </thead>
+    <tbody> 
+    <volist name="list" id="vo">
+	<tr>
+	<td align="center"><input type="checkbox" name="id[]" value="{$vo['id']}" id="id"></td>	
+	<td align="left">{$vo['group_id']}</td>
+	<td align="left">{$vo['group_name']}</td>
+	<td align="center">
+      <a href="__URL__/edit/id/{$vo['id']}">修改</a>|
+      <a href="__URL__/del/id/{$vo['id']}" onClick="return confirm('确定删除该记录吗?')">删除</a>
+    </td>
+	</tr>
+	</volist>	
+  </tbody>
+ </table>
+   <div class="btn" style="font-size:12px;">
+    <label for="check_box" id ="CheckedRev">
+    <a href="javascript:selAll()" class="coolbg">全选</a>&nbsp;
+	<a href="javascript:noSelAll()" class="coolbg">取消</a> 
+    </label>
+    &nbsp;<input type="button" id="del" value="删除" class="coolbg"/>   
+    &nbsp;&nbsp;<div id="pages"> {$page}</div>
+   </div>
+</form>
+</div>
+</div>
+</div>
+<script src="__PUBLIC__/Js/jquery.min.js"></script>
+<!-- <script src="__PUBLIC__/admin/js/layer/layer.js" type="text/javascript" ></script> -->
+<script type="text/javascript">
+$(function(){
+	$("#del").click(function () {
+          if(confirm('确定删除该记录吗?')){
+        	 return window.myform.submit();
+          }
+          else{
+        	  return false;
+          }
+	})
+})
+</script>
+</body>
+</html>

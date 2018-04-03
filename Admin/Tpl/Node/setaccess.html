@@ -1,0 +1,104 @@
+<include file="Public:indexheader" />
+<style type="text/css"> 
+<!-- 
+.subnav{
+	 /*padding:10px;*/
+	 border-style: solid;
+     border-bottom-width: 3px;
+	 border-bottom-color:#EEEEEE;  
+}.subnav h2{ margin-bottom:6px}
+--> 
+</style> 
+
+<body>
+<div style="border:1px solid #C8DAA3;">
+ <div>
+    <div style="background:#EEF5DE;height:25px;padding-top: 5px;">
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;">当前位置:会员>节点授权</span>
+    </div>
+   
+</div>
+<div style="border:1px solid #C8DAA3;">
+ <div>
+    <div style="background:#FFFFFF;height:25px;">
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;"><a href="__URL__/index"  target="main" title="会员管理">管理列表</a></span>|
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;"><a href="__URL__/insert"  target="main" title="添加节点">添加节点</a></span>
+    </div>
+   <hr />
+</div>
+<div class="pad_10">
+<div id="searchid">
+   <table width="100%" cellspacing="0" class="search-form">
+    <tbody>
+	  <tr>
+		<td>
+		<div style="border:1px solid #ffbe7a;zoom:1; background: #fffced; padding:8px 10px; line-height:20px;">
+		
+		</div>
+		</td>
+	 </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<div class="table-list">
+    <form name="myform" id="myform" action="__URL__/saveaccess" method="POST">
+    <table width="100%" cellspacing="0" style="font-size:12px;">
+        <thead>
+            <tr>
+            <th width="50" align="center">选取</th>
+			<th align="left">显示名称</th>
+			<th align="left">链接</th>
+			<th align="center">状态</th>
+            </tr>
+        </thead>
+    <tbody> 
+    <volist name="Nodelist" id="vo">
+	<tr style="background:#faffe0;">   
+	<td align="center"><input class="father{$vo['id']} father" type="checkbox" name="id[]" value="{$vo['id']}"  <if condition="($vo['checked'] eq 1)">checked="checked"</if> style="width:16px;height:16px;" id="id"></td>	
+	<td align="left">{$vo['title']}</td>
+	<td></td>
+    <td align="center"><if condition="($vo['status'] eq 1)"><span style="color:green;font-weight:bold;">√</span><else />ㄨ</if></td>
+	</tr>
+	<volist name="vo.sub_node" id="vv">
+	<tr>
+	<td align="center"><input class="children{$vv['pid']} children" data="{$vv['pid']}" type="checkbox" name="id[]" value="{$vv['id']}" <if condition="($vv['checked'] eq 1)">checked="checked"</if> id="id"></td>	
+	<td align="left">&nbsp;&nbsp;&nbsp;|__{$vv['title']}</td>
+	<td>{$vv['name']}</td>
+    <td align="center"><if condition="($vv['status'] eq 1)"><span style="color:green;font-weight:bold;">√</span><else />ㄨ</if></td>
+	</tr>	
+	</volist>
+	</volist>	
+  </tbody>
+ </table>
+	<div class="btn" style="font-size:12px;">
+    <label for="check_box" id ="CheckedRev">
+    <a href="javascript:selAll()" class="coolbg">全选</a>&nbsp;
+	<a href="javascript:noSelAll()" class="coolbg">取消</a> 
+    </label> &nbsp;&nbsp;     
+        <input type="hidden" name="role_id"  value="{$role_id}">
+        <input type="submit" name="dosubmit" value="授权" class="button" />&nbsp;		
+        &nbsp;&nbsp;
+	   </div>
+</form>
+</div>
+</div>
+</div>
+<script src="__PUBLIC__/Js/jquery.min.js"></script>
+<script type="text/javascript">
+$(".children").click(function () {
+	$(".father"+$(this).attr("data")).prop("checked", true);
+})
+$(".father").click(function () {		
+    if (this.checked) {
+    	$(".children"+$(this).val()).prop("checked", true);
+        //$(this).parent().parent().parent().parent().find(".children").prop("checked", true);
+    } else {
+    	$(".children"+$(this).val()).prop("checked", false);
+        //$(this).parent().parent().parent().parent().find(".children").prop("checked", false);
+    }
+})
+</script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<include file="Public:header" />
+
+ <script language="Javascript">
+function delet()
+{
+  if(confirm("确定删除该记录吗?")){
+    return document.myform.action='?m=Guestbook&a=act&action=delete';
+	
+  }else{
+   return false;
+  }
+} 
+</script>
+<style type="text/css"> 
+<!-- 
+.subnav{
+	 /*padding:10px;*/
+	 border-style: solid;
+     border-bottom-width: 3px;
+	 border-bottom-color:#EEEEEE;  
+}.subnav h2{ margin-bottom:6px}
+--> 
+</style> 
+
+<body>
+<div style="border:1px solid #C8DAA3;">
+ <div>
+    <div style="background:#EEF5DE;height:20px;padding-top: 5px;">
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;">当前位置:留言>管理</span>
+    </div>
+   
+</div>
+<div style="border:1px solid #C8DAA3;margin-bottom:5px;">
+ <div>
+    <div style="background:#FFFFFF;height:20px;margin-bottom:5px;"><p>
+    <a href="__URL__/index"  target="main" title="管理列表" style="text-decoration:none;color:#333">
+   <span style="margin-right:5px;margin-top:5px;margin-left:10px;padding: 3px;font-size:12px;background-color:#618d01;color:#fff;">
+   管理列表</span></a>
+    </div>
+   <hr style="margin-right:10px;margin-left:10px;color:#EEEEEE;"/>
+</div>
+
+
+<div class="table-list">
+   <form name="myform"  id="myform" method="POST">
+    <table width="100%" cellspacing="0" style="font-size:12px;">
+        <thead>
+            <tr>
+            <th width="50" align="center">选取</th>
+			<th align="center">ID</th>
+			<th align="center">昵称</th>
+			<th  align="center">E-mail</th>	
+			<th  align="center">内容</th>												
+			<th align="center">查看</th>
+			<th  align="center">发布时间</th>
+			<th  align="center">管理操作</th>			
+			
+            </tr>
+        </thead>
+    <tbody> 
+    <volist name="guestbooklist" id="vo">
+	<tr>
+	<td align="center"><input type="checkbox" name="id[]" value="{$vo['id']}" id="id"></td>	
+	<td align="center">{$vo['id']}</td>
+	<td align="center">{$vo['username']}</td>
+	<td align="center">{$vo['email']}</td>
+	<td align="center">{$vo['content']}</td>
+	<td align="center"><a href="__URL__/reply/id/{$vo['id']}">详细</a></td>		
+	<td align="center">{$vo['inputtime']|date="Y-m-d H:i:s",###}</td>
+	<td align="center">
+     <if condition="$vo['Reply'] neq  ''">             
+        <a href="__URL__/reply/id/{$vo['id']}">已回复</a>|
+	 <else />
+        <a href="__URL__/reply/id/{$vo['id']}">回复</a>|
+	 </if>                                  				  
+	
+    </td>
+	</tr>
+	 </volist>	
+  </tbody>
+ </table>
+	<div class="btn" style="font-size:12px;">
+   <label for="check_box" id ="CheckedRev">
+    <a href="javascript:selAll()" class="coolbg">全选</a>&nbsp;
+	<a href="javascript:noSelAll()" class="coolbg">取消</a> 
+    </label> &nbsp;&nbsp;
+    
+        
+     
+		<input type="submit" name="act" value="审核" class="coolbg" onClick="document.myform.action='?m=Guestbook&a=act&action=check';"/>&nbsp;
+        <input type="submit" name="act" value="删除" class="coolbg" onClick="delet()"/>
+		
+        &nbsp;&nbsp;<div id="pages"> {$page}</div>
+	   </div>
+</form>
+</div>
+</div>
+</div>
+</body>
+</html>
