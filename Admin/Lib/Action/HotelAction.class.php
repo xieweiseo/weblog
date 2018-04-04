@@ -226,14 +226,14 @@ class HotelAction extends CommonAction {
         $dispage = is_array($aa) ? $statistics_page : $statistics_show;               
         $show_page = $aa ? '' : $p->show();
         
-        
         //四位分组号酒店总数
+        $hfc = $hotel->query('select group_id,status from wb_hotel where status=1');
         $four_groupid = 0;
-        foreach ($list_info as $k=>$v){
-            if(strlen($v['group_id'])==4){
+        foreach ($hfc as $k=>$v){
+            if(strlen($v['group_id'])==4 && $v['status']=='1'){
                 $four_groupid++;
             }
-        }                    
+        } 
         
         //dump($lists);exit;
         $p->setConfig('header', '条');
