@@ -95,6 +95,7 @@ div.btn{height:42px;}
 		<th align="left">播控ID</th>
 		<th align="center">设备数</th>
 		<th align="center">上线数</th>
+		<th align="center">状态</th>
 		<th align="left">创建时间</th>	
 		<th align="left">管理操作</th>							
         </tr>
@@ -119,8 +120,9 @@ div.btn{height:42px;}
 	  	<else/>
  			<font style="color:red">{$vo['online_count']}</font>
 	  </if>
-	 </a></td>   	
-	<td align="left">{$vo['create_date']}</td>
+	 </a></td>
+	<td align="center"><if condition="$vo['status'] eq 0"><font style="color:green">nor</font><else/><a class='tips' title="点击查看换机设备" href="{:U('Device/index',array('hotel_id'=>$vo['id'],'group_id'=>$vo['group_id']),'')}"><font style="color:red">rep</font></a></if></td>   	
+	<td align="left">{$vo['create_date']}</td>	
 	<td align="left">
 	<a href="{:U('Device/index',array('hotel_id'=>$vo['id'],'group_id'=>$vo['group_id']),'')}" class='tips'>查看</a> | 
 	<a href="__URL__/edit/id/{$vo['id']}">修改</a> | 
