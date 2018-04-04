@@ -402,7 +402,7 @@ class ReportAction extends CommonAction {
             $map .= 'and hotel_name like "%'.$hotel_name.'%" ' ;
         }
                
-        $db_config = C('DB_CONFIG');//"mysql://xw:AoJGjhCHa9PR5xNJ@127.0.0.1:3306/panel";  
+        $db_config = C('DB_CONFIG');
         $prefix = 'user_panel_click_sum_';         
         $Model = new Model();
         $db = $Model->db(1,$db_config);
@@ -424,8 +424,9 @@ class ReportAction extends CommonAction {
                 $dlist .= $v['device_code'].",";
             }
          
-            
-            $panel_sql =  "select panel_no,block_no,sum(click_count),date from user_panel_click_sum_soft_201803 as t where t.date='".$date."' and t.device_id in (".rtrim($dlist,',').") group by panel_no,block_no";
+            //搜索日期
+            $preym = $date ?substr($date,0,6):date('Ym');
+            $panel_sql =  "select panel_no,block_no,sum(click_count),date from user_panel_click_sum_soft_".$preym." as t where t.date='".$date."' and t.device_id in (".rtrim($dlist,',').") group by panel_no,block_no";
             //dump($panel_sql);
             $panel_list[$hv['hotel_name']] = $db->query($panel_sql);
 
