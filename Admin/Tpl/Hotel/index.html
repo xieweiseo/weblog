@@ -47,7 +47,19 @@ div.btn{height:42px;}
 		<td>
 		<div style="border:1px solid #87b87f;zoom:1; background: rgba(255, 255, 255, 0.15); padding:5px 10px; line-height:20px;">
 		<form id="search_form" class="form-inline" action="__URL__/index" method="post">
-                   酒店名
+	      
+		  <span id="city_china_val" style="display:block;margin-bottom:3px;">	
+                   地 区 &nbsp;&nbsp; 	
+			<select name="province" class="province" data-value="{:I('province')}" data-first-title="选择省" disabled="disabled"></select>		
+			<select name="city" class="city" data-value="{:I('city')}" data-first-title="选择市" disabled="disabled"></select>		
+			<select name="area" class="area" data-value="{:I('area')}" data-first-title="选择地区" disabled="disabled"></select>		
+      &nbsp;&nbsp; &nbsp;&nbsp;    
+                   分组
+          <input type="text" name="group_id" value="{:I('group_id')}" size="5">&nbsp;&nbsp;&nbsp;		  
+                 时间
+          <input type="text" name="timegap" value="{:I('timegap')}" id="start_time" style="width:190px;">		  
+		  </span>                   
+               酒店名
           <input type="text" name="hotel_name" value="{:I('hotel_name')}">&nbsp;		
 <!--                    分组
           <input type="text" name="group_id" value="{:I('group_id')}" size="5">&nbsp; -->
@@ -57,16 +69,9 @@ div.btn{height:42px;}
 	      <select name="online_count"><option value="rc" <php>if($_POST['online_count']=="rc"){echo "selected='selected'";}</php>>房间数</option><option value="oc" <php>if($_POST['online_count']=="oc"){echo "selected='selected'";}</php>>上线数</option></select>
 	      <input type="text" name="start_num" size="5" value="{:I('start_num')}"> --  
 	 	  <input type="text" name="end_num" size="5" value="{:I('end_num')}">&nbsp;        
-<!--                   地区    
-		  <span id="city_china_val">		
-			<select name="province" class="province" data-value="{:I('province')}" data-first-title="选择省" disabled="disabled"></select>		
-			<select name="city" class="city" data-value="{:I('city')}" data-first-title="选择市" disabled="disabled"></select>		
-			<select name="area" class="area" data-value="{:I('area')}" data-first-title="选择地区" disabled="disabled"></select>		
-		  </span>    -->
 	  状态 <select name="online"><option value="0">--全部--</option><option value="1" <php>if(I('online')==1){echo 'selected="selected"';}</php>>已上线</option><option value="2" <php>if(I('online')==2){echo 'selected="selected"';}</php>>未上线</option></select>&nbsp;	              
           
-             时间
-          <input type="text" name="timegap" value="{:I('timegap')}" id="start_time" style="width:190px;">
+
 <input  type="submit"  name='dosubmit' class="btn-info" value="搜索" />                   
         </form>
 		</div>
