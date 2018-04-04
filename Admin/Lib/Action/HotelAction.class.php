@@ -218,13 +218,22 @@ class HotelAction extends CommonAction {
             $device_online+= $device->where("group_id<>0 and ysten_gid<>0 and group_id=ysten_gid and status in(1) and hotel_id=".$v['id'])->count();
         }
         
-        //dump($aa);
+
         //统计总数显示
         $statistics_page = array('total'=>$aa?count($aa):0,'count'=>$dcount?$dcount:0,'online'=>$donline?$donline:0);
         $statistics_show = array('total'=>$count,'count'=>$device_count,'online'=>$device_online);
         $list_info = is_array($aa) ? $aa : $lists;
         $dispage = is_array($aa) ? $statistics_page : $statistics_show;               
         $show_page = $aa ? '' : $p->show();
+        
+        
+        //四位分组号酒店总数
+        $four_groupid = 0;
+        foreach ($list_info as $k=>$v){
+            if(strlen($v['group_id'])==4){
+                $four_groupid++;
+            }
+        }                    
         
         //dump($lists);exit;
         $p->setConfig('header', '条');
@@ -235,7 +244,8 @@ class HotelAction extends CommonAction {
 
         $this->assign("page", $show_page);
         $this->assign('list', $list_info);        
-        $this->assign('info', $dispage);        
+        $this->assign('info', $dispage);  
+        $this->assign('four_groupid',$four_groupid);
         $this->display();
     }
 		
