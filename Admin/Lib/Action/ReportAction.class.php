@@ -351,7 +351,7 @@ class ReportAction extends CommonAction {
         foreach ($list as $tk=>$tv){
             $data[$tk]['date'] = str_replace('-', '', $trunon_date); //日期搜索
             $map = "date='".$data[$tk]['date']."' and device_id in (".rtrim($tv,',').")";  
-            $result = $uos->where($map)->count();
+            $result = $uos->where($map)->count('distinct device_id');
             $data[$tk]['hotel_name'] = $tk;
             $data[$tk]['decount']= $device_count[$tk];
             $data[$tk]['tocount'] = empty($result)?0 : $result;
