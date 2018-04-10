@@ -416,6 +416,7 @@ class ReportAction extends CommonAction {
         $hotel_list = $hotel->field('id,hotel_name')->where($map)->limit($p->firstRow . ',' . $p->listRows)->order('id desc')->select();
         //dump($hotel_list);exit;
         
+            
         $date = str_replace('-', '', $trunon_date);       
         foreach ($hotel_list as $hk=>$hv){
             $device_list = $device->field('device_code')->where("hotel_id=".$hv['id']." and device_code<>'' and (status=0 or status=1)")->select();
