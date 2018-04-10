@@ -282,6 +282,7 @@ function addlog($log, $name = false)
 }
 
 
+//通过电视账号同步mac
 function synchro_userid()
 {
     $device = M('device');
@@ -296,7 +297,7 @@ function synchro_userid()
         $user_ids = implode(',', $uid);
         
         //dump($user_ids);exit;
-        $where = "user_id in (".$user_ids.") and device_code<>'' and device_mac<>'' and status=1";
+        $where = "user_id in (".$user_ids.") and device_code<>'' and device_mac<>''";
         $user_id_list = $user_id->field('user_id,device_code,device_mac')->where($where)->order('user_id desc')->select();
         
         //dump($user_id_list);exit;
