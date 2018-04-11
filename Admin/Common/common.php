@@ -355,8 +355,7 @@ function synchro_userid()
 }
 
 //获取panel推荐位
-function get_panel_list($hotel_name,$panle,$dispaly){
-   
+function get_panel_list($hotel_name,$panle,$dispaly){  
    $sr = array();
    if($hotel_name && $panle && $dispaly){
        $list = array(
