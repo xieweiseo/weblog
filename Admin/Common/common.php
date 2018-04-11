@@ -352,6 +352,31 @@ function synchro_userid()
        $device->data($map)->where("device_code='".$v['device_code']."'")->save();
        //dump($device->getLastSql());
    }  
-
 }
+
+//获取panel推荐位
+function get_panel_list($hotel_name,$panle,$dispaly){
+   
+   $sr = array();
+   if($hotel_name && $panle && $dispaly){
+       $list = array(
+               '香草园'=>array(
+                   //panel
+                   0=>array(1=>'欢迎入住',2=>'影视院线',3=>'客房服务',4=>'商旅服务'),
+                   //推荐位
+                   1=>array(1=>'log酒店介绍',2=>'院线大片',3=>'电视看点',4=>'酒店设施',5=>'客房WIFI'),
+                   2=>array(1=>'电影',2=>'电视剧',3=>'综艺',4=>'动漫',5=>'体育',6=>'辉煌中国',7=>'还看今朝',8=>'电视看点'),
+                   3=>array(1=>'服务指南',2=>'安全信息',3=>'睡前音乐',4=>'酒店贴士'),
+                   4=>array(1=>'景点介绍',2=>'畅行厦门',3=>'当地美食',4=>'商圈推荐',5=>'特产推荐',6=>'天气',7=>'茶文化',8=>'旅游应用推荐'),
+               )
+     );
+        
+     $sr['panel'] = $list[$hotel_name][0][$panle];
+     $sr['recomend'] = $list[$hotel_name][$panle][$dispaly];
+       
+   }
+   
+   return $sr;
+}
+
 ?>
