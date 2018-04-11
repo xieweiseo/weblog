@@ -393,7 +393,7 @@ class ReportAction extends CommonAction {
     }
     
     //设备panel点击量    
-    public function device_click(){
+    public function device_click01(){
         $hotel_name = I('hotel_name','','trim')? I('hotel_name','','trim') : '';
         $trunon_date = I('trunon_date','','trim') ? I('trunon_date','','strip_tags,trim'): date('Y-m-d');
         //搜索条件
@@ -446,6 +446,164 @@ class ReportAction extends CommonAction {
         $this->assign('list',$panel_list);
         $this->display('panel');
     }
+    
+    //===============================================
+    public function device_click2(){    
+        $hotel_name = '金后酒店'; //I('hotel_name','','trim')? I('hotel_name','','trim') : '';
+        $timegap = '2018-04-09 - 2018-04-09' ;//I('trunon_date','','trim') ? I('trunon_date','','strip_tags,trim'): date('Y-m-d'). ' - ' .date('Y-m-d');
+        //搜索条件
+        $map = 'status=1 ';
+        if($hotel_name){
+            $map .= 'and hotel_name like "%'.$hotel_name.'%" ' ;
+        }
+         
+        $db_config = C('DB_CONFIG');
+        $prefix = 'user_panel_click_sum_';
+        $Model = new Model();
+        $db = $Model->db(1,$db_config);
+        
+        $device = M('Device');
+        $hotel = M('Hotel');
+        import("ORG.Util.Page");
+        $count = $hotel->where($map)->count(); //计算总数
+        $pagesize = 11;
+        $p = new Page($count, $pagesize);
+        $hotel_list = $hotel->field('id,hotel_name')->where($map)->limit($p->firstRow . ',' . $p->listRows)->order('id desc')->select();
+        //dump($hotel_list);exit;
+        
+        if($timegap){
+            $gap = explode(' - ', $timegap);
+            if(is_array($gap) && count($gap)==2){
+                $begin = str_replace('-', '', $gap[0]);
+                $end = str_replace('-', '', $gap[1]);
+            }
+            else{
+                $begin = str_replace('-', '', $timegap);
+                $end = $begin;
+            }
+        }
+        
+        $date_list = $this->prDates($gap[0], $gap[1]);
+        
+        $data_str = str_replace('-', '', implode(',', $date_list));
+        dump($data_str);
+        
+        
+        dump($begin.'---'.$end);
+        //$date = str_replace('-', '', $trunon_date);
+        
+        //一个月份一张表，限制只能选择同一个月份的日期
+        $ybegin = substr($begin, 4,2);
+        $yend = substr($end, 4,2);
+        if($ybegin!=$yend){
+            $this->error('只能选择同一个月份的日期！');
+        }
+        
+        foreach ($hotel_list as $hk=>$hv){
+            $device_list = $device->field('device_code')->where("hotel_id=".$hv['id']." and device_code<>'' and (status=0 or status=1)")->select();
+            //dump($device_list);
+            foreach($device_list as $v){
+                $dlist .= $v['device_code'].",";
+            }
+             
+            //搜索日期
+            $preym = $end ?substr($end,0,6):date('Ym');
+            $panel_sql =  "select panel_no,block_no,sum(click_count),date from user_panel_click_sum_soft_".$preym." as t where t.date in (".$data_str.") and t.device_id in (".rtrim($dlist,',').") group by panel_no,block_no,date order by date desc,panel_no,block_no ASC";
+            dump($panel_sql);
+            $panel_list[$hv['hotel_name']] = $db->query($panel_sql);
+        
+        }
+        
+        //dump($panel_list);
+        
+        $p->setConfig('header', '条');
+        $p->setConfig('prev', "<");
+        $p->setConfig('next', '>');
+        $p->setConfig('first', '<<');
+        $p->setConfig('last', '>>');
+        
+        $this->assign("page", $p->show());
+        $this->assign('trunon_date',$timegap);
+        $this->assign('list',$panel_list);
+        $this->display('panel');
+    }    
+    
+    //##############################################
+    public function device_click(){
+        $hotel_name = I('hotel_name','','trim')? I('hotel_name','','trim') : '';
+        $timegap = I('trunon_date','','trim') ? I('trunon_date','','strip_tags,trim'): date('Y-m-d'). ' - ' .date('Y-m-d');//搜索条件
+        
+        //搜索条件
+        $map = 'status=1 ';
+        if($hotel_name){
+            $map .= 'and hotel_name like "%'.$hotel_name.'%" ' ;
+        }
+         
+        $db_config = C('DB_CONFIG');
+        $prefix = 'user_panel_click_sum_';
+        $Model = new Model();
+        $db = $Model->db(1,$db_config);
+    
+        $device = M('Device');
+        $hotel = M('Hotel');
+        import("ORG.Util.Page");
+        $count = $hotel->where($map)->count(); //计算总数
+        $pagesize = 11;
+        $p = new Page($count, $pagesize);
+        $hotel_list = $hotel->field('id,hotel_name')->where($map)->limit($p->firstRow . ',' . $p->listRows)->order('id desc')->select();
+        //dump($hotel_list);exit;
+    
+        if($timegap){
+            $gap = explode(' - ', $timegap);
+            if(is_array($gap) && count($gap)==2){
+                $begin = str_replace('-', '', $gap[0]);
+                $end = str_replace('-', '', $gap[1]);
+            }
+            else{
+                $begin = str_replace('-', '', $timegap);
+                $end = $begin;
+            }
+        }
+    
+        //dump($begin.'---'.$end);
+        //$date = str_replace('-', '', $trunon_date);
+    
+        //一个月份一张表，限制只能选择同一个月份的日期
+        $ybegin = substr($begin, 4,2);
+        $yend = substr($end, 4,2);
+        if($ybegin!=$yend){
+            $this->error('只能选择同一个月份的日期！');
+        }
+    
+        foreach ($hotel_list as $hk=>$hv){
+            $device_list = $device->field('device_code')->where("hotel_id=".$hv['id']." and device_code<>'' and (status=0 or status=1)")->select();
+            //dump($device_list);
+            foreach($device_list as $v){
+                $dlist .= $v['device_code'].",";
+            }
+             
+            //搜索日期
+            $preym = $end ?substr($end,0,6):date('Ym');
+            $panel_sql =  "select panel_no,block_no,sum(click_count),date from user_panel_click_sum_soft_".$preym." as t where t.date BETWEEN '".$begin."' and '".$end."' and t.device_id in (".rtrim($dlist,',').") group by panel_no,block_no,date order by date desc,panel_no,block_no ASC";
+            //dump($panel_sql);
+            $panel_list[$hv['hotel_name']] = $db->query($panel_sql);
+    
+        }
+    
+        //dump($panel_list);
+    
+        $p->setConfig('header', '条');
+        $p->setConfig('prev', "<");
+        $p->setConfig('next', '>');
+        $p->setConfig('first', '<<');
+        $p->setConfig('last', '>>');
+    
+        $this->assign("page", $p->show());
+        $this->assign('trunon_date',$timegap);
+        $this->assign('list',$panel_list);
+        $this->display('panel');
+    }    
+    
     
     //两个日期之间的所有日期
     private function prDates($start,$end){
