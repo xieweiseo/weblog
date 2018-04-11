@@ -449,8 +449,8 @@ class ReportAction extends CommonAction {
     
     //===============================================
     public function device_click2(){    
-        $hotel_name = '金后酒店'; //I('hotel_name','','trim')? I('hotel_name','','trim') : '';
-        $timegap = '2018-04-09 - 2018-04-09' ;//I('trunon_date','','trim') ? I('trunon_date','','strip_tags,trim'): date('Y-m-d'). ' - ' .date('Y-m-d');
+        $hotel_name = '香草园'; //I('hotel_name','','trim')? I('hotel_name','','trim') : '';
+        $timegap = '2018-03-01 - 2018-03-31' ;//I('trunon_date','','trim') ? I('trunon_date','','strip_tags,trim'): date('Y-m-d'). ' - ' .date('Y-m-d');
         //搜索条件
         $map = 'status=1 ';
         if($hotel_name){
@@ -509,12 +509,25 @@ class ReportAction extends CommonAction {
             //搜索日期
             $preym = $end ?substr($end,0,6):date('Ym');
             $panel_sql =  "select panel_no,block_no,sum(click_count),date from user_panel_click_sum_soft_".$preym." as t where t.date in (".$data_str.") and t.device_id in (".rtrim($dlist,',').") group by panel_no,block_no,date order by date desc,panel_no,block_no ASC";
-            dump($panel_sql);
+            //dump($panel_sql);
             $panel_list[$hv['hotel_name']] = $db->query($panel_sql);
         
         }
         
-        //dump($panel_list);
+        dump($panel_list);
+        
+        foreach($panel_list as $k=>$v){
+            foreach($v as $kk=>$vv){
+                $pr = get_panel_list($k, $vv["panel_no"], $vv["block_no"]);
+                if($pr){
+                    $vv["panel_no"] = $pr['panel'];
+                    $vv["block_no"] = $pr['recomend'];
+                }
+                $panel[$k][] = $vv;
+            }
+        }
+        
+        dump($panel);
         
         $p->setConfig('header', '条');
         $p->setConfig('prev', "<");
@@ -524,7 +537,7 @@ class ReportAction extends CommonAction {
         
         $this->assign("page", $p->show());
         $this->assign('trunon_date',$timegap);
-        $this->assign('list',$panel_list);
+        $this->assign('list',$panel);
         $this->display('panel');
     }    
     
@@ -591,16 +604,29 @@ class ReportAction extends CommonAction {
         }
     
         //dump($panel_list);
-    
+        
+        //panel推荐位转成对应中文
+        foreach($panel_list as $k=>$v){
+            foreach($v as $kk=>$vv){
+                $pr = get_panel_list($k, $vv["panel_no"], $vv["block_no"]);
+                if(is_array($pr) && !empty($pr['panel']) && !empty($pr['recomend'])){
+                    $vv["panel_no"] = $pr['panel'];
+                    $vv["block_no"] = $pr['recomend'];
+                }
+                $panel[$k][] = $vv;
+            }
+        }    
+        
+                
         $p->setConfig('header', '条');
         $p->setConfig('prev', "<");
         $p->setConfig('next', '>');
         $p->setConfig('first', '<<');
         $p->setConfig('last', '>>');
     
-        $this->assign("page", $p->show());
+        $this->assign("page", $panel?$p->show():'');
         $this->assign('trunon_date',$timegap);
-        $this->assign('list',$panel_list);
+        $this->assign('list',$panel);
         $this->display('panel');
     }    
     
