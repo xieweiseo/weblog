@@ -51,22 +51,24 @@
 	    <th width="14%" align="left">日期</th>
 	  </tr>
 	  </thead>
-	  <php>foreach($list as $hk=>$hv){</php>
+	  <php>if($list){foreach($list as $hk=>$hv){</php>
 	  <tr>
 	    <td height="36" valign="top" style="padding-top:10px;"><php>echo $hk</php></td>
 	    <td colspan="4">
 	    <php>foreach($hv as $cv){</php>
 	    <table width="98%" border="0">
 	      <tr>
-	        <td width="31%" height="26"><php>echo $cv['panel_no']</php></td>
-	        <td width="33%"><php>echo $cv['block_no']</php></td>
-	        <td width="19%"><php>echo $cv['sum(click_count)']</php></td>
-	        <td width="18%"><php>echo $cv['date']</php></td>
+	        <td width="31%" height="26" style="padding-left:0px;border:0"><php>echo $cv['panel_no']</php></td>
+	        <td width="33%" style="padding-left:6px;border:0"><php>echo $cv['block_no']</php></td>
+	        <td width="19%" style="border:0"><php>echo $cv['sum(click_count)']</php></td>
+	        <td width="18%" style="border:0"><php>echo $cv['date']</php></td>
 	      </tr>
 	    </table>
 	    <php>}</php>
 	    </td>
 	  </tr>
+	  <php>}}else{</php>	  
+	   <tr><td colspan="5" align="center">唉(╯﹏╰)，无人问津 ~~</td></tr>
 	  <php>}</php>
 	</table>   
 	<div class="btn" style="font-size:12px;">
@@ -76,7 +78,6 @@
      <div id="pages">{$page}</div>
 	</div>
  </form>
-</div>
 </div>
 </div>
 <script type="text/javascript">
