@@ -25,17 +25,28 @@
             <td align="left">
              <input type="file" name="upload_excel" id="upload_excel" size="50"/>&nbsp;&nbsp;<input type="button" id="upload" value="上传" /> &nbsp;&nbsp;&nbsp;&nbsp; | <a href="{:U('Device/template_download')}" >模板下载</a>
             </td>	
-            </tr>            
+            </tr> 
+            <tr >
+            <td width="50" align="center" style="border: 0;"></td>
+            <td align="left" style="border: 0;" >
+            <div id="ckbtn" style="margin: 10px 0;">
+                <label><input style="vertical-align:middle;" type="checkbox" name="account_import" value='1'><span style="vertical-align:middle;">电视账号</span></label>
+                <label><input style="vertical-align:middle;" type="checkbox" name="account_import" value='2'><span style="vertical-align:middle;">Mac</span></label>
+                <label><input style="vertical-align:middle;" type="checkbox" name="account_import" value='3'><span style="vertical-align:middle;">广电号</span></label>
+                <label><input style="vertical-align:middle;" type="checkbox" name="account_import" value='4'><span style="vertical-align:middle;">串号</span></label>
+                <label><span style="color:#ccc;padding-left: 8px;">选择导入的账号类型</span></label>
+            </div>
+            </td>   
+            </tr>                        
        </tbody>    
  	</table>
-	<div id="ckbtn" class="btn" style="font-size:12px;">
-	<label><input style="vertical-align:middle;" type="checkbox" name="mac_import" value='1'><span style="vertical-align:middle;">mac导入</span></label>  <label><input style="vertical-align:middle;" type="checkbox" name="mac_import" value='2'><span style="vertical-align:middle;">广电号导入</span></label>&nbsp;&nbsp; <label><span style="color:#ccc">默认都不勾选为电视账号导入</span></label> 
+    <div class="btn">
      <input type=hidden name="hotel_id" value="{$hotel_id}">
      <input type=hidden name="group_id" value="{$group_id}">
      <input type=hidden name="hotel_name" value="{$hotel_name}">
      <input type="submit"  name="dosubmit" value="确定" id="send" class="button" style="margin-left: 450px;">&nbsp;&nbsp;
 	 <input  type="button" class="button" onclick="javascript:;history.back();" value="取 消" alt="取消" />
-	</div>
+    </div>
 </form>
 </div>
 </div>
