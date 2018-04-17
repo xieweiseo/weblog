@@ -477,19 +477,28 @@ class DeviceAction extends CommonAction {
                }
                
                //判断是否为mac导入
-               $mac_import = I('mac_import');
-               if(!$mac_import){
+               $account_import = I('account_import');
+               if($account_import==1){
                    //电视账号导入
                    $data = $this->importExcel_USER($ExlData,$group_id,$hotel_id);
                }
-               else if($mac_import==1){
+               else if($account_import==2){
                    //mac导入
                    $data = $this->importExcel_MAC($ExlData,$group_id,$hotel_id);
                }
-               else if($mac_import==2){
+               else if($account_import==3){
                    //广电号导入
                    $data = $this->importExcel_Device_Code($ExlData,$group_id,$hotel_id);
                }
+               else if($account_import==4){
+                   //串号导入
+                   $data = $this->importExcel_Serial_Number($ExlData,$group_id,$hotel_id);
+               }
+               else{
+                    $this->error('请选择导入账号类型');
+               }
+
+
                
                if ($data>0) {
                    $this->success("恭喜，导入".$data."条！",U('index',array('hotel_id'=>$hotel_id,'group_id'=>$group_id)));     
@@ -730,7 +739,75 @@ class DeviceAction extends CommonAction {
         
        return $import_number;
    }   
+ 
+   /**
+    * 串号导入
+    * @return nubmer [description]
+    */
+   public function importExcel_Serial_Number($ExlData, $group_id = 0 ,$hotel_id = 0){
+       //dump($ExlData);exit;
+       $device = M('Device');
+       $user_id = M('user_id');
+       $create_time = date('Y-m-d H:i:s');
+       //dump(sizeof($ExlData));exit;
+       $import_number = 0;
+       
+       //dump($ExlData);exit;
+       //验证不能为空
+       for($i = 2,$j=0;$i<=sizeof($ExlData)+1;$i++,$j++){
+           if(!$ExlData[$i]['A']){
+               $this->error("第:".$i++."行serial_number不存在!");
+           }
+           if(stripos($ExlData[$i]['A'], 'E+')){
+               $this->error("第:".$i++."行不为文本格式!");
+           }                   
+       }
    
+       //验证重复记录并输出重复数据
+       foreach ($ExlData as $k=>$v){
+           $tt[]= strtoupper($v['A']);
+       }
+       $list = array_diff_assoc($tt,array_unique($tt));
+       if(!empty($list)){
+           $hotel_name = M('hotel')->where('id='.$hotel_id)->getField('hotel_name');
+           if($hotel_name){
+               echo "表格中有(".count($list)."条)重复数据<br/>";
+               echo '<hr style="height:1px;border:none;border-top:1px solid #eee;">';
+               foreach ($list as $val){
+                   echo $val."<br/>";
+               }
+               echo "<a href='".U('import',array('hotel_id'=>$hotel_id,'group_id'=>$group_id,'hotel_name'=>$hotel_name))."'>返 回</a>";
+               echo '<hr style="height:1px;border:none;border-top:1px solid #eee;">';
+               exit;
+           }
+       }
+   
+       //echo date("H:i:s");
+       //echo "<pre>";
+       $sql_device = "INSERT INTO wb_device (serial_no,hotel_id,group_id,create_date,status) VALUES ";
+       $sql_user_id = "INSERT INTO wb_user_id (serial_no,at_time,status) VALUES ";
+       for($i = 2;$i<=sizeof($ExlData)+1;$i++){
+           $uid = $device->where("serial_no='".$ExlData[$i]['A']."' and hotel_id='".$hotel_id."' and status<>-1")->count();
+           if(!$uid){
+               $sql_device.="('".$ExlData[$i]['A']."',".$hotel_id.",'".$group_id."','".$create_time."',0),";
+               $sql_user_id.="('".$ExlData[$i]['A']."','".$create_time."',0),";
+               $import_number++;
+           }
+       }
+   
+       $sql_device = substr($sql_device,0,strlen($sql_device)-1);
+       $sql_user_id = substr($sql_user_id,0,strlen($sql_user_id)-1);
+        
+       try{
+           $device_result = $device->execute($sql_device);
+           $user_id_result = $user_id->execute($sql_user_id);
+            
+       }catch (\Exception $e){
+           echo $e->getMessage();
+       }
+        
+       return $import_number;   
+   }  
    
    
    //导出
