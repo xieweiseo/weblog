@@ -63,6 +63,7 @@
         <th width="50" align="left"><input class="check-all" type="checkbox" value=""></th>
         <th align="left">ID</th>
 		<th align="left">电视账号</th>
+		<th align="left">串号</th>
 		<th align="left">广电号</th>
 		<th align="left">设备MAC</th>
 		<th align="left">分组ID</th>
@@ -78,6 +79,7 @@
 	<td align="left"><input type="hidden" name="ids[]" value="{$vo['id']}" > <input type="checkbox" name="macs[]" class="aids" value="{$vo['device_mac']}" id="id"></td>	
 	<td align="left">{$vo['devid']}</td>
 	<td align="left"><a title="点击可查看用户账号状态" href="{:U('/account/index',array('user_id'=>$vo['user_id']))}">{$vo['user_id']}</a></td>
+	<td align="left">{$vo['serial_no']}</td>
 	<td align="left">{$vo['device_code']}</td>
 	<td align="left"><a title=<if condition="$vo['retain_mac'] neq null">"{$vo['retain_mac']}"<else/>"服务集查询，面板预览"</if> href="__URL__/service/mac/{$vo['device_mac']}/hotel/{$hotel_name}" class="tips"><if condition="$vo['retain_mac'] neq null"><font style="color:red;">{$vo['device_mac']}</font><else/>{$vo['device_mac']}</if></a></td>		
 	<td align="left">{$vo['group_id']}</td>
