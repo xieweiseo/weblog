@@ -571,12 +571,12 @@ class DeviceAction extends CommonAction {
        //echo date("H:i:s");
        //echo "<pre>";      
        $sql_device = "INSERT INTO wb_device (user_id,hotel_id,group_id,create_date,status) VALUES ";  
-       $sql_user_id = "INSERT INTO wb_user_id (user_id,at_time,status) VALUES ";
+       $sql_user_id = "INSERT INTO wb_user_id (user_id,at_time,status,type) VALUES ";
        for($i = 2;$i<=sizeof($ExlData)+1;$i++){
            $uid = $device->where("user_id='".$ExlData[$i]['A']."' and hotel_id='".$hotel_id."' and status<>-1")->count();
           if(!$uid){
                 $sql_device.="('".$ExlData[$i]['A']."',".$hotel_id.",'".$group_id."','".$create_time."',0),";
-                $sql_user_id.="('".$ExlData[$i]['A']."','".$create_time."',0),";
+                $sql_user_id.="('".$ExlData[$i]['A']."','".$create_time."',0,1),";
                 $import_number++;
            }
        }
@@ -642,12 +642,12 @@ class DeviceAction extends CommonAction {
        //echo date("H:i:s");
        //echo "<pre>";
        $sql_device = "INSERT INTO wb_device (device_mac,hotel_id,group_id,create_date,status) VALUES ";
-       $sql_user_id = "INSERT INTO wb_user_id (device_mac,at_time,status) VALUES ";
+       $sql_user_id = "INSERT INTO wb_user_id (device_mac,at_time,status,type) VALUES ";
        for($i = 2;$i<=sizeof($ExlData)+1;$i++){
            $uid = $device->where("device_mac='".$ExlData[$i]['A']."' and hotel_id='".$hotel_id."' and status<>-1")->count();
            if(!$uid){
                $sql_device.="('".$ExlData[$i]['A']."',".$hotel_id.",'".$group_id."','".$create_time."',0),";
-               $sql_user_id.="('".$ExlData[$i]['A']."','".$create_time."',0),";
+               $sql_user_id.="('".$ExlData[$i]['A']."','".$create_time."',0,3),";
                $import_number++;
            }
        }
@@ -716,12 +716,12 @@ class DeviceAction extends CommonAction {
        //echo date("H:i:s");
        //echo "<pre>";
        $sql_device = "INSERT INTO wb_device (device_code,hotel_id,group_id,create_date,status) VALUES ";
-       $sql_user_id = "INSERT INTO wb_user_id (device_code,at_time,status) VALUES ";
+       $sql_user_id = "INSERT INTO wb_user_id (device_code,at_time,status,type) VALUES ";
        for($i = 2;$i<=sizeof($ExlData)+1;$i++){
            $uid = $device->where("device_code='".$ExlData[$i]['A']."' and hotel_id='".$hotel_id."' and status<>-1")->count();
            if(!$uid){
                $sql_device.="('".$ExlData[$i]['A']."',".$hotel_id.",'".$group_id."','".$create_time."',0),";
-               $sql_user_id.="('".$ExlData[$i]['A']."','".$create_time."',0),";
+               $sql_user_id.="('".$ExlData[$i]['A']."','".$create_time."',0,2),";
                $import_number++;
            }
        }
@@ -785,12 +785,12 @@ class DeviceAction extends CommonAction {
        //echo date("H:i:s");
        //echo "<pre>";
        $sql_device = "INSERT INTO wb_device (serial_no,hotel_id,group_id,create_date,status) VALUES ";
-       $sql_user_id = "INSERT INTO wb_user_id (serial_no,at_time,status) VALUES ";
+       $sql_user_id = "INSERT INTO wb_user_id (serial_no,at_time,status,type) VALUES ";
        for($i = 2;$i<=sizeof($ExlData)+1;$i++){
            $uid = $device->where("serial_no='".$ExlData[$i]['A']."' and hotel_id='".$hotel_id."' and status<>-1")->count();
            if(!$uid){
                $sql_device.="('".$ExlData[$i]['A']."',".$hotel_id.",'".$group_id."','".$create_time."',0),";
-               $sql_user_id.="('".$ExlData[$i]['A']."','".$create_time."',0),";
+               $sql_user_id.="('".$ExlData[$i]['A']."','".$create_time."',0,4),";
                $import_number++;
            }
        }
