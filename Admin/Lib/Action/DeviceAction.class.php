@@ -20,11 +20,15 @@ class DeviceAction extends CommonAction {
         $device_code = I('device_code','','trim');
         $device_mac = I('device_mac','','trim');
         $ysten_gid = I('ysten_gid','','trim');
+        $serial_no = I('serial_no','','trim');
         if ($hotel_id) {
             $where .= "and hotel_id=".$hotel_id." ";
         }
         if ($user_id) {
             $where .= "and user_id='".$user_id."' ";
+        }
+        if($serial_no){
+            $where .= "and serial_no='".$serial_no."' ";
         }
         if($device_code){
             $where .= "and device_code='".$device_code."' ";
@@ -38,7 +42,8 @@ class DeviceAction extends CommonAction {
         if($ysten_gid=='1'){
             $where .= "and group_id=ysten_gid ";
         }
-        //dump($where);
+
+        dump($where);
         import("ORG.Util.Page"); 
         $count = $device->where($where)->count(); //计算总数
         $pagesize = 18;
@@ -823,11 +828,12 @@ class DeviceAction extends CommonAction {
        //设置表格的宽度
        $objPhpExcel->getActiveSheet()->getColumnDimension('A')->setWidth(20);
        $objPhpExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
-       $objPhpExcel->getActiveSheet()->getColumnDimension('C')->setWidth(18);
-       $objPhpExcel->getActiveSheet()->getColumnDimension('D')->setWidth(15);
+       $objPhpExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+       $objPhpExcel->getActiveSheet()->getColumnDimension('D')->setWidth(18);
+       $objPhpExcel->getActiveSheet()->getColumnDimension('E')->setWidth(15);
    
        //设置标题
-       $rowVal = array(0=>'开户号', 1=>'广电号',2=>'设备MAC',3=>'分组ID');
+       $rowVal = array(0=>'电视账号', 1=>'设备序号', 2=>'广电号', 3=>'MAC', 4=>'分组ID');
         
        foreach ($rowVal as $k=>$r){
            $objPhpExcel->getActiveSheet()->getStyleByColumnAndRow($k,1)
@@ -854,9 +860,10 @@ class DeviceAction extends CommonAction {
                $num=$k+2;
                $objPhpExcel->setActiveSheetIndex(0)
                ->setCellValue('A'.$num, $v['user_id'])
-               ->setCellValue('B'.$num, ' '.$v['device_code'])
-               ->setCellValue('C'.$num, $v['device_mac'])
-               ->setCellValue('D'.$num, ' '.$v['group_id']);
+               ->setCellValue('B'.$num, ' '.$v['serial_no'])
+               ->setCellValue('C'.$num, ' '.$v['device_code'])
+               ->setCellValue('D'.$num, $v['device_mac'])
+               ->setCellValue('E'.$num, ' '.$v['group_id']);
            }
        }
        else{
