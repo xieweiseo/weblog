@@ -6,7 +6,6 @@
 <script src="__PUBLIC__/admin/js/poshytip-1.2/jquery.poshytip.js" type="text/javascript" ></script>
 <body>
 <div>
- <div>
     <div style="background:#EEF5DE;height:20px;padding-top: 5px;">
       <span style="margin-right:5px;margin-left:5px;font-size:12px;">当前位置: 酒店查看&nbsp;>&nbsp;{$hotel_name}</span>
     </div>   
@@ -33,9 +32,11 @@
 		<div style="border:1px solid #87b87f;zoom:1; background: rgba(255, 255, 255, 0.15); padding:5px 10px; line-height:20px;">
 		<form id="search_form" class="form-inline" action="__URL__/index" method="post">
                   电视账号
-          <input type="text" name="user_id" value="{:I('user_id')}" >&nbsp;
-                  广电号     
-          <input type="text" name="device_code" value="{:I('device_code')}" >
+          <input type="text" name="user_id" value="{:I('user_id')}" >
+                  广电号 
+          <input type="text" name="device_code" value="{:I('device_code')}" >                            
+                  设备串号                     
+          <input type="text" name="serial_no" value="{:I('serial_no')}" >
                   设备MAC     
           <input type="text" name="device_mac" value="{:I('device_mac')}" >  
           <input type="hidden" name="hotel_id" value="{$hotel_id}"> 
@@ -63,7 +64,7 @@
         <th width="50" align="left"><input class="check-all" type="checkbox" value=""></th>
         <th align="left">ID</th>
 		<th align="left">电视账号</th>
-		<th align="left">串号</th>
+		<th align="left">设备串号</th>
 		<th align="left">广电号</th>
 		<th align="left">设备MAC</th>
 		<th align="left">分组ID</th>
