@@ -1,0 +1,126 @@
+<include file="Public:indexheader"/>
+<script type="text/javascript">
+function delet()
+{
+  if(confirm("确定删除该记录吗?")){
+    return document.myform.action='?m=Node&a=act&action=delete';	
+  }else{
+    return false;
+  }
+} 
+</script>
+<style type="text/css"> 
+<!-- 
+.subnav{
+	 /*padding:10px;*/
+	 border-style: solid;
+     border-bottom-width: 3px;
+	 border-bottom-color:#EEEEEE;  
+}.subnav h2{ margin-bottom:6px}
+--> 
+</style> 
+<body>
+<div>
+    <div style="background:#EEF5DE;height:20px;padding-top: 5px;">
+      <span style="margin-right:5px;margin-left:5px;font-size:12px;">当前位置: 酒店面板&nbsp;>&nbsp;{$hotel_name}</span>
+    </div>   
+</div>
+<div style="border:1px solid #C8DAA3;margin-bottom:3px;">
+ <div>
+   <div style="background:#FFFFFF;height:25px;margin-bottom:2px;padding-top:8px;">
+     <a href="javascript:void(0)"  target="main" title="panel" style="text-decoration:none;color:#333">
+     <span style="margin-right:5px;margin-top:5px;margin-left:10px;padding: 3px;font-size:12px;background-color:#618d01;color:#fff;">
+            导 入</span></a>| 
+     <span style="margin-right:5px;margin-left:5px;font-size:12px;">
+     <a href="{:U('create',array('hotel_id'=>$hotel_id,''))}" style="text-decoration:none;" target="main" title="添加">添加</a>
+     </span> 
+   </div>
+ </div>
+</div>
+
+<div class="table-list">
+    <form name="myform"  id="myform" method="POST">
+    <table width="100%" cellspacing="0" style="font-size:12px;">
+        <thead>
+            <tr>
+            <th width="50" align="center"><input class="check-all" type="checkbox" value=""></th>
+            <th align="left"></th>
+      		<th align="left">名称</th>
+            <th align="left">标识</th>
+      		<th align="center">状态</th>
+      		<th align="center">管理操作</th>
+            </tr>
+        </thead>
+    <tbody> 
+  <volist name="panel_list" id="vo">
+	<tr>
+	<td align="center"><input type="checkbox" name="id[]" value="{$vo['id']}" class="aids" id="id"></td>	
+    <td align="left"></td>
+	<td align="left">{$vo['panel_name']}</td>	
+	<td align="left">{$vo['panel_no']}</td>    
+    <td align="center"><if condition="($vo['status'] eq 1)"><span style="color:green;">显示</span><else />不显示</if></td>
+	  <td align="center">
+      <a href="__URL__/insert/id/{$vo['id']}/hotel_id/{$hotel_id}">修改</a> |
+      <a href="__URL__/del/id/{$vo['id']}" onClick="return confirm('确定删除该记录吗?')">删除</a>      
+    </td>
+	</tr>
+    <volist name="vo.block_name" id="block_vo">
+  	<tr>
+  	<td align="center"><input type="checkbox" name="id[]" value="{$block_vo['id']}" class="aids" id="id"></td>	
+    <td align="left"></td>
+  	<td align="left">&nbsp;&nbsp;|__ {$block_vo['panel_name']}</td>
+  	<td align="left">{$block_vo['block_no']}</td>    
+    <td align="center"><if condition="($block_vo['status'] eq 1)"><span style="color:green;">显示</span><else />不显示</if></td>
+  	<td align="center">
+        <a href="__URL__/insert/id/{$block_vo['id']}/hotel_id/{$hotel_id}">修改</a> |
+        <a href="__URL__/del/id/{$block_vo['id']}" onClick="return confirm('确定删除该记录吗?')">删除</a>      
+      </td>
+  	</tr>
+  	</volist>	
+  </volist>	
+  </tbody>
+ </table>
+    <php>if($panel_list):</php>
+	<div class="btn" style="font-size:12px;">
+        <input type="button" name="act" value="删除" class="coolbg" id="del"/>
+        &nbsp;&nbsp;<div id="pages"> {$page}</div>
+	</div>
+	<php>endif;</php>
+</form>
+</div>
+</div>
+</div>
+<script src="__PUBLIC__/Js/jquery.min.js"></script>
+<script type="text/javascript">
+$(function(){
+    $(".check-all").click(function () {
+        $(".aids").prop("checked", this.checked);
+    });	
+	
+	$("#del").click(function () {
+          if(confirm('确定删除该记录吗?')){
+        	  $("form").attr("action","{:U('del')}").submit();
+        	 //return window.myform.submit();
+          }
+          else{
+        	  return false;
+          }
+	});	
+		
+	$(".inputorder").change(function () {
+	    var id = $(this).attr('val');
+	    var o = $(this).val();
+	    if (id != o) {
+	        $.post("{:U('ajax_sort')}", {id: id, o: o}, function (data) {
+	            if (data == 1) {
+	                window.location.reload(true);
+	            }
+	        }
+	    )
+	        ;
+	    }
+	})
+})
+</script>
+</body>
+</html>
