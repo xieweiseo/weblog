@@ -43,9 +43,9 @@ class DeviceAction extends CommonAction {
             $where .= "and group_id=ysten_gid ";
         }
 
-        dump($where);
+        //dump($where);
         import("ORG.Util.Page"); 
-        $count = $device->where($where)->count(); //计算总数
+        $count = $device->where($where)->count('distinct user_id'); //计算总数
         $pagesize = 18;
         $p = new Page($count, $pagesize);
         $list = $device->where($where)->limit($p->firstRow . ',' . $p->listRows)->order('id desc')->select(); 
@@ -555,9 +555,18 @@ class DeviceAction extends CommonAction {
        
        
        //验证重复记录并输出重复数据
+       $device= M('Device');
        foreach ($ExlData as $k=>$v){
            $tt[]= $v['A'];
+           $result = $device->field('wb_device.user_id,wb_device.status,wb_hotel.hotel_name')->join('LEFT JOIN wb_hotel ON wb_hotel.id = wb_device.hotel_id')->where('wb_device.user_id='.$v['A'].' and wb_device.status<>-1')->find();
+           if($result['hotel_name']){
+               echo "账号(".$v['A'].")在".$result['hotel_name']."中已存在！<br/>";
+               echo '<hr style="height:1px;border:none;border-top:1px solid #eee;">';
+               echo "<a href='".U('import',array('hotel_id'=>$hotel_id,'group_id'=>$group_id,'hotel_name'=>$result['hotel_name']))."'>返 回</a>";
+               exit;
+           }
        }
+       
        $list = array_diff_assoc($tt,array_unique($tt));     
        if(!empty($list)){
            $hotel_name = M('hotel')->where('id='.$hotel_id)->getField('hotel_name');
