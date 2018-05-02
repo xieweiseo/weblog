@@ -306,9 +306,9 @@ class ReportAction extends CommonAction {
     //单个酒店每日开机量统计
     public function single_hotel(){      
         $hotel_name = I('hotel_name') ? I('hotel_name','','strip_tags,trim') : '';
-        $trunon_date = I('trunon_date') ? I('trunon_date','','strip_tags,trim') : date('Y-m-d',strtotime(date('Y-m-d').'-2 day'));
+        $turnon_date = I('turnon_date') ? I('turnon_date','','strip_tags,trim') : date('Y-m-d'); //date('Y-m-d',strtotime(date('Y-m-d').'-2 day'));
         
-        //dump($trunon_date);exit;
+        //dump($turnon_date);exit;
         $device = M('Device');
         $uos= M('user_online_soft');
         $hotel = M('hotel');
@@ -318,6 +318,43 @@ class ReportAction extends CommonAction {
         }
 
         //dump($hotel_ids);exit;
+        
+        //开机总数//------------------------------------------------------->
+        $redis = new \Redis();
+        $redis->connect(C("REDIS_HOST"),C("REDIS_PORT"));
+        $turn_on_total= $redis->get("turn_on_total".$turnon_date.$hotel_name);
+        if(!$redis->exists('turn_on_total'.$turnon_date.$hotel_name)){
+            $hotel_ids = $hotel->field('id,hotel_name')->where($where)->select();
+            foreach ($hotel_ids as $k=>$v){
+                $lists = $device->field('id,user_id,device_code,device_mac')->where("hotel_id=".$v['id']." and (status=1 or status=0)")->select();
+                $device_list[$v['hotel_name']] = $lists;
+                $device_count[$v['hotel_name']] = count($lists);
+            }
+            foreach ($device_list as $kv=>$vv){
+                if(is_array($vv)){
+                    foreach($vv as $ak=>$av){
+                        $list[$kv] .= !empty($av['device_code'])?"'".$av['device_code']."',":null;
+                    }
+                }
+                else{
+                    $list[$kv] = null;
+                }
+            }
+            $turn_on_total = 0;
+            foreach ($list as $tk=>$tv){
+                $data[$tk]['date'] = str_replace('-', '', $turnon_date); //日期搜索
+                $map = "date='".$data[$tk]['date']."' and device_id in (".rtrim($tv,',').")";
+                $result = $uos->where($map)->count('distinct device_id');
+                $data[$tk]['hotel_name'] = $tk;
+                $data[$tk]['decount']= $device_count[$tk];
+                $data[$tk]['tocount'] = empty($result)?0 : $result;
+                $turn_on_total+= $data[$tk]['tocount'];
+            }
+            $redis->set('turn_on_total'.$turnon_date.$hotel_name,json_encode($turn_on_total),7200);
+        }
+        //end//-------------------------------------------------------------->
+        
+        
         
         //每个酒店下的设备
         import("ORG.Util.Page");
@@ -346,10 +383,10 @@ class ReportAction extends CommonAction {
         }
         //dump($a);exit;
         //dump($list);
-        //dump($trunon_date);
-        //dump(str_replace('-', '', $trunon_date));exit;
+        //dump($turnon_date);
+        //dump(str_replace('-', '', $turnon_date));exit;
         foreach ($list as $tk=>$tv){
-            $data[$tk]['date'] = str_replace('-', '', $trunon_date); //日期搜索
+            $data[$tk]['date'] = str_replace('-', '', $turnon_date); //日期搜索
             $map = "date='".$data[$tk]['date']."' and device_id in (".rtrim($tv,',').")";  
             $result = $uos->where($map)->count('distinct device_id');
             $data[$tk]['hotel_name'] = $tk;
@@ -379,7 +416,7 @@ class ReportAction extends CommonAction {
             
 //         }
         
-       
+        
         $p->setConfig('header', '条');
         $p->setConfig('prev', "<");
         $p->setConfig('next', '>');
@@ -387,7 +424,8 @@ class ReportAction extends CommonAction {
         $p->setConfig('last', '>>');        
         $this->assign("page", $p->show());        
         $this->assign('data',$data);
-        $this->assign('trunon_date',$trunon_date);
+        $this->assign('turnon_date',$turnon_date);
+        $this->assign('turn_on_total',$turn_on_total);
         $this->display('single');
         
     }
@@ -395,7 +433,7 @@ class ReportAction extends CommonAction {
     //设备panel点击量    
     public function device_click01(){
         $hotel_name = I('hotel_name','','trim')? I('hotel_name','','trim') : '';
-        $trunon_date = I('trunon_date','','trim') ? I('trunon_date','','strip_tags,trim'): date('Y-m-d');
+        $turnon_date = I('turnon_date','','trim') ? I('turnon_date','','strip_tags,trim'): date('Y-m-d');
         //搜索条件
         $map = 'status=1 ';
         if($hotel_name){
@@ -417,7 +455,7 @@ class ReportAction extends CommonAction {
         //dump($hotel_list);exit;
         
             
-        $date = str_replace('-', '', $trunon_date);       
+        $date = str_replace('-', '', $turnon_date);       
         foreach ($hotel_list as $hk=>$hv){
             $device_list = $device->field('device_code')->where("hotel_id=".$hv['id']." and device_code<>'' and (status=0 or status=1)")->select();
             //dump($device_list);
@@ -442,7 +480,7 @@ class ReportAction extends CommonAction {
         $p->setConfig('last', '>>');
         
         $this->assign("page", $p->show());
-        $this->assign('trunon_date',$trunon_date);
+        $this->assign('turnon_date',$turnon_date);
         $this->assign('list',$panel_list);
         $this->display('panel');
     }
@@ -450,7 +488,7 @@ class ReportAction extends CommonAction {
     //===============================================
     public function device_click2(){    
         $hotel_name = '香草园'; //I('hotel_name','','trim')? I('hotel_name','','trim') : '';
-        $timegap = '2018-03-01 - 2018-03-31' ;//I('trunon_date','','trim') ? I('trunon_date','','strip_tags,trim'): date('Y-m-d'). ' - ' .date('Y-m-d');
+        $timegap = '2018-03-01 - 2018-03-31' ;//I('turnon_date','','trim') ? I('turnon_date','','strip_tags,trim'): date('Y-m-d'). ' - ' .date('Y-m-d');
         //搜索条件
         $map = 'status=1 ';
         if($hotel_name){
@@ -486,11 +524,11 @@ class ReportAction extends CommonAction {
         $date_list = $this->prDates($gap[0], $gap[1]);
         
         $data_str = str_replace('-', '', implode(',', $date_list));
-        dump($data_str);
+        //dump($data_str);
         
         
-        dump($begin.'---'.$end);
-        //$date = str_replace('-', '', $trunon_date);
+        //dump($begin.'---'.$end);
+        //$date = str_replace('-', '', $turnon_date);
         
         //一个月份一张表，限制只能选择同一个月份的日期
         $ybegin = substr($begin, 4,2);
@@ -515,19 +553,37 @@ class ReportAction extends CommonAction {
         }
         
         dump($panel_list);
+        $list = $this->getPanel();
+        $panel_modle = M('panel');
+        $panle_no1 = $panel_modle->field('wb_panel.*,wb_hotel.hotel_name')->join('LEFT JOIN wb_hotel ON wb_hotel.id = wb_panel.hotel_id')->where('wb_panel.pid=0')->select();
+        $panle_no2 = $panel_modle->field('wb_panel.*,wb_hotel.hotel_name')->join('LEFT JOIN wb_hotel ON wb_hotel.id = wb_panel.hotel_id')->where('wb_panel.pid<>0')->select();
         
         foreach($panel_list as $k=>$v){
-            foreach($v as $kk=>$vv){
-                $pr = get_panel_list($k, $vv["panel_no"], $vv["block_no"]);
-                if($pr){
-                    $vv["panel_no"] = $pr['panel'];
-                    $vv["block_no"] = $pr['recomend'];
+            foreach($v as $kk=>$vv){                
+                //在panel里查找对应中文
+                foreach($panle_no1 as $pa=>$pb){
+                    //查找对应的酒店面板
+                    if($pb['hotel_name']==$k && $pb['panel_no']==$vv['panel_no']){
+                        dump($pb['panel_no'].'--'.$vv['panel_no'].'-->'.$pb['panel_name']);       
+                            //dump($vv['panel_no'.'---'.$pb['panel_name']]);
+                            $vv['panel_no'] = $pb['panel_name'];
+                            $id = $pb['id'];
+                        }
+                } 
+                
+                //查找对应酒店推荐位
+                foreach ($panle_no2 as $ba=>$bv){
+                    if($bv['hotel_name']==$k && $bv['pid']==$id && $bv['block_no']==$vv['block_no']){
+                        $vv['block_no'] = $bv['panel_name'];
+                    }
                 }
                 $panel[$k][] = $vv;
-            }
+             }
+                
         }
         
         dump($panel);
+ 
         
         $p->setConfig('header', '条');
         $p->setConfig('prev', "<");
@@ -536,7 +592,7 @@ class ReportAction extends CommonAction {
         $p->setConfig('last', '>>');
         
         $this->assign("page", $p->show());
-        $this->assign('trunon_date',$timegap);
+        $this->assign('turnon_date',$timegap);
         $this->assign('list',$panel);
         $this->display('panel');
     }    
@@ -544,7 +600,7 @@ class ReportAction extends CommonAction {
     //##############################################
     public function device_click(){
         $hotel_name = I('hotel_name','','trim')? I('hotel_name','','trim') : '';
-        $timegap = I('trunon_date','','trim') ? I('trunon_date','','strip_tags,trim'): date('Y-m-d'). ' - ' .date('Y-m-d');//搜索条件
+        $timegap = I('turnon_date','','trim') ? I('turnon_date','','strip_tags,trim'): date('Y-m').'-01'. ' - ' .date('Y-m-d');
         
         //搜索条件
         $map = 'status=1 ';
@@ -561,9 +617,10 @@ class ReportAction extends CommonAction {
         $hotel = M('Hotel');
         import("ORG.Util.Page");
         $count = $hotel->where($map)->count(); //计算总数
-        $pagesize = 11;
+        $pagesize = 1111;
         $p = new Page($count, $pagesize);
         $hotel_list = $hotel->field('id,hotel_name')->where($map)->limit($p->firstRow . ',' . $p->listRows)->order('id desc')->select();
+        //$hotel_list = $hotel->field('id,hotel_name')->where($map)->order('id desc')->select();
         //dump($hotel_list);exit;
     
         if($timegap){
@@ -579,7 +636,7 @@ class ReportAction extends CommonAction {
         }
     
         //dump($begin.'---'.$end);
-        //$date = str_replace('-', '', $trunon_date);
+        //$date = str_replace('-', '', $turnon_date);
     
         //一个月份一张表，限制只能选择同一个月份的日期
         $ybegin = substr($begin, 4,2);
@@ -588,35 +645,65 @@ class ReportAction extends CommonAction {
             $this->error('只能选择同一个月份的日期！');
         }
     
-        foreach ($hotel_list as $hk=>$hv){
-            $device_list = $device->field('device_code')->where("hotel_id=".$hv['id']." and device_code<>'' and (status=0 or status=1)")->select();
-            //dump($device_list);
-            foreach($device_list as $v){
-                $dlist .= $v['device_code'].",";
+        $panel_list = '';
+        if($hotel_list){           
+            foreach ($hotel_list as $hk=>$hv){
+                $device_list = $device->field('device_code')->where("hotel_id=".$hv['id']." and device_code<>'' and (status=0 or status=1)")->select();
+                //dump($device_list);
+                if($device_list){
+                    foreach($device_list as $v){
+                        $dlist .= $v['device_code'].",";
+                    }  
+                
+                    //搜索日期
+                    $preym = $end ?substr($end,0,6):date('Ym');
+                    $panel_sql =  "select panel_no,block_no,sum(click_count),date from user_panel_click_sum_soft_".$preym." as t where t.date BETWEEN '".$begin."' and '".$end."' and t.device_id in (".rtrim($dlist,',').") group by panel_no,block_no,date order by date desc,panel_no,block_no ASC";
+                    $panel_list[$hv['hotel_name']] = $db->query($panel_sql);
+               }         
             }
-             
-            //搜索日期
-            $preym = $end ?substr($end,0,6):date('Ym');
-            $panel_sql =  "select panel_no,block_no,sum(click_count),date from user_panel_click_sum_soft_".$preym." as t where t.date BETWEEN '".$begin."' and '".$end."' and t.device_id in (".rtrim($dlist,',').") group by panel_no,block_no,date order by date desc,panel_no,block_no ASC";
-            //dump($panel_sql);
-            $panel_list[$hv['hotel_name']] = $db->query($panel_sql);
-    
         }
     
         //dump($panel_list);
         
         //panel推荐位转成对应中文
-        foreach($panel_list as $k=>$v){
-            foreach($v as $kk=>$vv){
-                $pr = get_panel_list($k, $vv["panel_no"], $vv["block_no"]);
-                if(is_array($pr) && !empty($pr['panel']) && !empty($pr['recomend'])){
-                    $vv["panel_no"] = $pr['panel'];
-                    $vv["block_no"] = $pr['recomend'];
-                }
-                $panel[$k][] = $vv;
+        $panel = '';
+        if($panel_list){
+            $panel_modle = M('panel');
+            $panle_no1 = $panel_modle->field('wb_panel.*,wb_hotel.hotel_name')->join('LEFT JOIN wb_hotel ON wb_hotel.id = wb_panel.hotel_id')->where('wb_panel.pid=0')->select();
+            $panle_no2 = $panel_modle->field('wb_panel.*,wb_hotel.hotel_name')->join('LEFT JOIN wb_hotel ON wb_hotel.id = wb_panel.hotel_id')->where('wb_panel.pid<>0')->select();     
+            foreach($panel_list as $k=>$v){
+                foreach($v as $kk=>$vv){
+                    //在panel里查找对应中文
+                    foreach($panle_no1 as $pa=>$pb){
+                        //查找对应的酒店面板
+                        if($pb['hotel_name']==$k && $pb['panel_no']==$vv['panel_no']){
+                            //dump($vv['panel_no'.'---'.$pb['panel_name']]);
+                            $vv['panel_no'] = $pb['panel_name'];
+                            $id = $pb['id'];
+                        }
+                    }               
+                    //查找对应酒店推荐位
+                    foreach ($panle_no2 as $ba=>$bv){
+                        if($bv['hotel_name']==$k && $bv['pid']==$id && $bv['block_no']==$vv['block_no']){
+                            $vv['block_no'] = $bv['panel_name'];
+                        }
+                    }
+                    $panel[$k][] = $vv;
+                }           
             }
-        }    
-        
+        }
+              
+         //panel推荐位转成对应中文
+//         foreach($panel_list as $k=>$v){
+//             foreach($v as $kk=>$vv){
+//                 $pr = get_panel_list($k, $vv["panel_no"], $vv["block_no"]);
+//                 if(is_array($pr) && !empty($pr['panel']) && !empty($pr['recomend'])){
+//                     $vv["panel_no"] = $pr['panel'];
+//                     $vv["block_no"] = $pr['recomend'];
+//                 }
+//                 $panel[$k][] = $vv;
+//             }
+//         }    
                 
         $p->setConfig('header', '条');
         $p->setConfig('prev', "<");
@@ -625,7 +712,7 @@ class ReportAction extends CommonAction {
         $p->setConfig('last', '>>');
     
         $this->assign("page", $panel?$p->show():'');
-        $this->assign('trunon_date',$timegap);
+        $this->assign('turnon_date',$timegap);
         $this->assign('list',$panel);
         $this->display('panel');
     }    
@@ -644,4 +731,23 @@ class ReportAction extends CommonAction {
         return $arr;
     }
     
+    private function getPanel(){
+        $lists = M('panel')->field('wb_panel.*,wb_hotel.hotel_name')->join('LEFT JOIN wb_hotel ON wb_hotel.id = wb_panel.hotel_id')->where('wb_panel.hotel_id=79')->order('wb_panel.sort ASC,wb_panel.id DESC')->select();
+        //dump(M('panel')->getLastSql());
+        $panel_list = array();
+        if($lists){
+            foreach ($lists as $k=>$v){
+                if($v['pid']==0){
+                    $panel_list[$k] = $v;
+                    for($i=0;$i<count($lists);$i++){
+                        if($v['id']==$lists[$i]['pid']){
+                            $panel_list[$k]['block_name'][] = $lists[$i];
+                        }
+                    }
+                }
+            }
+        }       
+        return $panel_list;
+    }
+   
 }
