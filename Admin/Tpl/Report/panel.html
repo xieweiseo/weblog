@@ -27,7 +27,7 @@
                   酒店名称
           <input type="text" name=hotel_name value="{:I('hotel_name')}" >&nbsp;
                   选择时间     
-          <input type="text" name="trunon_date" value="{$trunon_date}" id="date_time">&nbsp;
+          <input type="text" name="turnon_date" value="{$turnon_date}" id="date_time">&nbsp;
            
           <input  type="submit"  name='dosubmit' class="btn-info" value="查询" />
         </form>
@@ -53,7 +53,7 @@
 	  </thead>
 	  <php>if($list){foreach($list as $hk=>$hv){</php>
 	  <tr>
-	    <td height="36" valign="top" style="padding-top:10px;"><php>echo $hk</php></td>
+	    <td height="36" valign="top" style="padding-top:10px;background:#c0d662;"><php>echo $hk</php></td>
 	    <td colspan="4">
 	    <php>foreach($hv as $cv){</php>
 	    <table width="98%" border="0">
