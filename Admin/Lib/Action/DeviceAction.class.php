@@ -45,8 +45,9 @@ class DeviceAction extends CommonAction {
 
         //dump($where);
         import("ORG.Util.Page"); 
-        $count = $device->where($where)->count('distinct user_id'); //计算总数
-        $pagesize = 18;
+        $count = $device->where($where)->count(); //计算总数
+        //dump($device->getLastSql());
+        $pagesize = 22;
         $p = new Page($count, $pagesize);
         $list = $device->where($where)->limit($p->firstRow . ',' . $p->listRows)->order('id desc')->select(); 
         $hotel_name = M('hotel')->where('id='.$hotel_id)->getField('hotel_name');
@@ -143,7 +144,7 @@ class DeviceAction extends CommonAction {
                 
                 //修改mac
                 $macs = $device->field('device_mac,retain_mac')->where("id=".$id)->find();
-                if($data['device_mac']!=$macs['device_mac']){
+                if(strtoupper($data['device_mac'])!==strtoupper($macs['device_mac'])){
                     $data['retain_mac']= $data['device_mac'].'|'.$macs['retain_mac'];
                 }
                 
@@ -171,6 +172,7 @@ class DeviceAction extends CommonAction {
         $ids = is_array($getid) ? $getids : $getid;   
         $device = M('Device');
         $user_id = M('user_id');
+        //dump($ids);exit;
         if($ids){
             //读取user_id
             $uid_list = $device->field('user_id')->where("id in(".$ids.")")->select();
@@ -702,9 +704,9 @@ class DeviceAction extends CommonAction {
            if(stripos($ExlData[$i]['A'], 'E+')){
                $this->error("第:".$i++."行不为文本格式!");
            }
-           if(1!=stripos($ExlData[$i]['A'], '0')){
-               $this->error("第:".$i++."行device_code格式不正确!");
-           }           
+//            if(1!=stripos($ExlData[$i]['A'], '0')){
+//                $this->error("第:".$i++."行device_code格式不正确!");
+//            }           
            
        }
    
