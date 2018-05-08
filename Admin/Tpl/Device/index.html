@@ -77,7 +77,7 @@
     <tbody> 
     <volist name="list" id="vo">
 	<tr>
-	<td align="left"><input type="hidden" name="ids[]" value="{$vo['id']}" > <input type="checkbox" name="macs[]" class="aids" value="{$vo['device_mac']}" id="id"></td>	
+	<td align="left"><!--<input type="hidden" name="ids[]" value="{$vo['id']}">--> <input type="checkbox" name="ids[]" class="aids" value="{$vo['id']}" id="id"></td>	
 	<td align="left">{$vo['devid']}</td>
 	<td align="left"><a title="点击可查看用户账号状态" href="{:U('/account/index',array('user_id'=>$vo['user_id']))}">{$vo['user_id']}</a></td>
 	<td align="left">{$vo['serial_no']}</td>
