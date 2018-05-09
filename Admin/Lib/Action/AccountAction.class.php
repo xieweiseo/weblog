@@ -192,15 +192,28 @@ class AccountAction extends CommonAction {
                 }
     
                 //dump($ExlData);exit;
-                $data = $this->importExcel_RAW($ExlData);
-                if ($data>0) {
-                    $this->success("成功导入".$data."条！",U('index'));
+                //导入多家酒店
+                $account_import = I('account_import');
+                //dump($account_import);
+                if($account_import){
+                    $data = $this->importExcel_RAW_MORE($ExlData);
+                    $status = 1;
                 }
-                else if($data==0){
-                    $this->success("导入".$data."条！",U('index'));
+                else{
+                    //单导入电视账号
+                    $data = $this->importExcel_RAW($ExlData);
+                }
+                
+                if ($data['error']==0) {
+                    if($status==1){
+                        $this->redirect('Hotel/index');
+                    }
+                    else{
+                        $this->redirect('Account/index');
+                    }
                 }
                 else {
-                    $this->error("导入失败，可能是excel中有些已经导入，或表格格式错误！");// 提示错误
+                    $this->error($data['message']);// 提示错误
                 }
             }
         }
@@ -217,14 +230,15 @@ class AccountAction extends CommonAction {
         $at_time = date('Y-m-d H:i:s');
         //dump(sizeof($ExlData));exit;
         $import_number = 0;
+        $result = array('error'=>0,'messge'=>'');
         //验证不能为空
         for($i = 2,$j=0;$i<=sizeof($ExlData)+1;$i++,$j++){
             if(empty($ExlData[$i]['A'])){
                 $this->error("第:".$i++."行不能为空!");
             }
-//             if(preg_match("/([\x{4e00}-\x{9fa5}])/u",$ExlData[$i]['A'])){
-//                 $this->error("第:".$i++."行格式不正确!");
-//             }            
+            if(preg_match("/([\x{4e00}-\x{9fa5}])/u",$ExlData[$i]['A'])){
+                $this->error("文件不正确，或格式不正确!");
+            }            
             if(stripos($ExlData[$i]['A'], 'E+')){
                 $this->error("第:".$i++."行不为文本格式!");
             }
@@ -248,14 +262,72 @@ class AccountAction extends CommonAction {
                
                  
             }catch (\Exception $e){
-                echo $e->getMessage();
+                //echo $e->getMessage();
+                $result['error'] = 1;
+                $result['message'] = $e->getMessage();
             }
     
         }
     
         //dump($dataList);exit;
          
-        return $import_number;
-    }    
+        //return $import_number;
+        return $result;
+    }  
+    
+    public function  importExcel_RAW_MORE($ExlData){
+        $hotel = M('Hotel');
+        $device = M('Device');
+        $at_time = date('Y-m-d H:i:s');
+        //dump($ExlData);
+        //验证不能为空
+        for($i = 2,$j=0;$i<=sizeof($ExlData)+1;$i++,$j++){
+            if(empty($ExlData[$i]['A'])){
+                $this->error("第:".$i++."行不能为空!");
+            }
+        }
+        
+        $result = array('error'=>0,'messge'=>'','hotel_id'=>$hotel_id);
+        for($i = 2,$j=0;$i<=sizeof($ExlData)+1;$i++,$j++){
+            $hotel_info = $hotel->field('id,group_id')->where('hotel_name="'.trim($ExlData[$i]['A']).'"')->find();
+            $dataList[] = array(               
+                'hotel_id' => $hotel_info['id'],
+                'user_id' => trim($ExlData[$i]['B']),
+                'device_code' => trim($ExlData[$i]['C']),
+                'device_mac' => trim($ExlData[$i]['D']),
+                'group_id' => $hotel_info['group_id'],
+                'create_date' =>$at_time,
+                'status'  => 1
+            );
+            try{
+                //dump($dataList[$j]);
+                //存在则更新
+                $map['hotel_id'] = $hotel_info['id'];
+                $map['device_mac'] = trim($ExlData[$i]['D']);
+                $map['status'] = 1;
+                $device_count = $device->where($map)->count();
+                if(!$device_count && $dataList[$j]['group_id']){
+                    $device->data($dataList[$j])->add();                    
+                }
+                else if($device_count && $dataList[$j]['group_id']){
+                    $where['user_id'] = trim($ExlData[$i]['B']);
+                    $device->data($dataList[$j])->where($where)->save();
+                }
+                else{
+                    echo 'nothing to do !';
+                }
+               //exit; 
+                
+            }catch (\Exception $e){
+                //echo $e->getMessage();
+                $result['error'] = 1;
+                $result['message'] = $e->getMessage();
+            }
+            
+        }
+        
+        return $result;
+    }  
+    
     
 }
