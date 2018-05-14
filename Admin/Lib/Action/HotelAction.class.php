@@ -21,6 +21,8 @@ class HotelAction extends CommonAction {
         $group_id = isset($_POST['group_id']) ? I('group_id',0,'trim') : '';
         $province = isset($_POST['province']) ? I('province','','trim') : '';
         $city = isset($_POST['city']) ? I('city','','trim') : '';
+        $type = isset($_POST['type']) ? I('type',0,'trim') : '';
+        
         
         $start_num = intval(isset($_POST['start_num']) ? I('start_num',0,'trim') : 0);
         $end_num = intval(isset($_POST['end_num']) ? I('end_num',0,'trim') : 0);
@@ -33,6 +35,9 @@ class HotelAction extends CommonAction {
         }
         if($device_code){
             $where .= "and device_code='".$device_code."' ";
+        }
+        if($type){
+            $where .="and type=".$type." ";
         }
         if($device_mac){
             $hotel_ids = M('Device')->field('hotel_id')->where("device_mac='".$device_mac."' and status=1")->select();
@@ -82,6 +87,7 @@ class HotelAction extends CommonAction {
             $lists[$k]['count'] = $device->where('status in(1,0) and hotel_id='.$v['id'])->count();
             $lists[$k]['ysten_gid'] = $device->where('status in(1) and ysten_gid<>0 and hotel_id='.$v['id'])->group('ysten_gid')->getField('ysten_gid');
             $lists[$k]['online_count'] = $device->where("group_id<>0 and ysten_gid<>0 and group_id=ysten_gid and status in(1) and hotel_id=".$v['id'])->count();
+            $lists[$k]['status'] = $device->where("retain_mac<>'' and status in(1) and hotel_id=".$v['id'])->count(); 
             $i++;
         }
 
@@ -277,6 +283,7 @@ class HotelAction extends CommonAction {
             $data['area'] = isset($_POST['area'])?strtolower(I('post.area','','strip_tags,trim')):'';
             $data['description'] = strtolower(I('post.description','','strip_tags,trim'));
             $data['group_id'] = I('post.group_id',0,'trim');
+            $data['type'] = I('post.type',0,'trim');
             
             $hotel = M('Hotel');
             $count = $hotel->where("hotel_name='".$data['hotel_name']."' and status in (1)")->count();
@@ -436,7 +443,19 @@ class HotelAction extends CommonAction {
                }
 
                //dump($ExlData);exit;
-               $data = $this->importExcel_RAW($ExlData);                      
+               $hotel_type = I('hotel_type');
+               if($hotel_type){
+                   //更新酒店版本
+                   $data =  $this->importExcel_UPDATE($ExlData);
+                   if($data['error']==0){
+                       $this->redirect('Hotel/index');
+                   }
+               }
+               else{
+                   //导入酒店
+                   $data = $this->importExcel_RAW($ExlData);
+               }
+                                     
                if ($data>0) { 
                    $this->success("恭喜，酒店导入".$data."条！",U('index'));     
                }
@@ -510,6 +529,46 @@ class HotelAction extends CommonAction {
        return $import_number;  
    }   
 
+   //更新酒店类版本
+   public function importExcel_UPDATE($ExlData, $hotel_id = 0){
+       $hotel = M('Hotel');
+       $create_time = date('Y-m-d H:i:s');
+       $result = array('error'=>0,'message'=>'');
+       //dump($ExlData);exit;
+       //dump(sizeof($ExlData));exit;
+       //验证不能为空
+       for($i = 2,$j=0;$i<=sizeof($ExlData)+1;$i++,$j++){
+           if(empty($ExlData[$i]['A'])){
+               $this->error("第:".$i++."行不能为空!");
+           }
+           if(empty($ExlData[$i]['B'])){
+               $this->error("第:".$i++."行不能为空!");
+           }
+           
+       }
+       //dump($ExlData);exit;
+       for($i = 2,$j=0;$i<=sizeof($ExlData)+1;$i++,$j++){
+           $dataList[] = array(
+               'hotel_name'=>trim($ExlData[$i]['A']),
+               'type'=> trim($ExlData[$i]['B']),
+               'update_date'=>$create_time,
+           );
+           try{
+               //更新酒店版本
+               $map['hotel_name'] = trim($dataList[$j]['hotel_name']); 
+               $hotel_id = $hotel->where($map)->data($dataList[$j])->save(); 
+               //dump($hotel->getLastSql());
+           }catch (\Exception $e){
+               $result['error'] = 1;
+               $result['message'] =  $e->getMessage();
+           }
+   
+       }              
+       //exit;
+       return $result;  
+   }
+   
+   
    //导入设备
    public function import_device($files,$hotel_id,$group_id){  
        $import_number = 0;
