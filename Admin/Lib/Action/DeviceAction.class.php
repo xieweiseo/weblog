@@ -485,9 +485,12 @@ class DeviceAction extends CommonAction {
                
                //判断是否为mac导入
                $account_import = I('account_import');
+               //导入类型
+               $account_type = I('account_type');
+               
                if($account_import==1){
                    //电视账号导入
-                   $data = $this->importExcel_USER($ExlData,$group_id,$hotel_id);
+                   $data = $this->importExcel_USER($ExlData,$group_id,$hotel_id,$account_type);
                }
                else if($account_import==2){
                    //mac导入
@@ -532,9 +535,10 @@ class DeviceAction extends CommonAction {
     * @param number $group_id
     * @param number $hotel_id
     */
-   public function  importExcel_USER($ExlData, $group_id = 0 ,$hotel_id = 0){   // 将导入表中的数据添加到  数据库数组中去         
+   public function  importExcel_USER($ExlData, $group_id = 0 ,$hotel_id = 0 ,$account_type = 0 ){   // 将导入表中的数据添加到  数据库数组中去         
        $device = M('Device');
-       $user_id = M('user_id');
+       $user_id = M('User_id');
+       $hotel = M('Hotel');
        $create_time = date('Y-m-d H:i:s');
        //dump(sizeof($ExlData));exit;
        $import_number = 0;
@@ -560,13 +564,13 @@ class DeviceAction extends CommonAction {
        $device= M('Device');
        foreach ($ExlData as $k=>$v){
            $tt[]= $v['A'];
-           $result = $device->field('wb_device.user_id,wb_device.status,wb_hotel.hotel_name')->join('LEFT JOIN wb_hotel ON wb_hotel.id = wb_device.hotel_id')->where('wb_device.user_id='.$v['A'].' and wb_device.status<>-1')->find();
-           if($result['hotel_name']){
-               echo "账号(".$v['A'].")在".$result['hotel_name']."中已存在！<br/>";
-               echo '<hr style="height:1px;border:none;border-top:1px solid #eee;">';
-               echo "<a href='".U('import',array('hotel_id'=>$hotel_id,'group_id'=>$group_id,'hotel_name'=>$result['hotel_name']))."'>返 回</a>";
-               exit;
-           }
+//            $result = $device->field('wb_device_id,wb_device.user_id,wb_device.status,wb_hotel.hotel_name，wb_hotel_type')->join('LEFT JOIN wb_hotel ON wb_hotel.id = wb_device.hotel_id')->where('wb_device.user_id='.$v['A'].' and wb_device.status<>-1')->find();
+//            if($result['hotel_name']){
+//                echo "账号(".$v['A'].")在".$result['hotel_name']."中已存在！<br/>";
+//                echo '<hr style="height:1px;border:none;border-top:1px solid #eee;">';
+//                echo "<a href='".U('import',array('hotel_id'=>$hotel_id,'group_id'=>$group_id,'hotel_name'=>$result['hotel_name']))."'>返 回</a>";
+//                exit;
+//            }
        }
        
        $list = array_diff_assoc($tt,array_unique($tt));     
@@ -586,29 +590,61 @@ class DeviceAction extends CommonAction {
        
        //echo date("H:i:s");
        //echo "<pre>";      
-       $sql_device = "INSERT INTO wb_device (user_id,hotel_id,group_id,create_date,status) VALUES ";  
+       $sql_device = "INSERT INTO wb_device (user_id,hotel_id,group_id,create_date,status,type) VALUES ";  
        $sql_user_id = "INSERT INTO wb_user_id (user_id,at_time,status,type) VALUES ";
        for($i = 2;$i<=sizeof($ExlData)+1;$i++){
-           $uid = $device->where("user_id='".$ExlData[$i]['A']."' and hotel_id='".$hotel_id."' and status<>-1")->count();
+          $result = $device->field('wb_device.id,wb_device.user_id,wb_device.status,wb_hotel.hotel_name,wb_hotel.type')->join('LEFT JOIN wb_hotel ON wb_hotel.id = wb_device.hotel_id')->where('wb_device.user_id='.$ExlData[$i]['A'].' and wb_device.status<>-1')->find();
+          //dump($device->getLastSql());
+          $uid = $device->where("user_id='".$ExlData[$i]['A']."' and hotel_id='".$hotel_id."' and status<>-1")->count();
+          
+          //user_id已存在
+          if($result['user_id']){             
+              $device_ids.= '"'.$result['id'].'",';  //找出存在的设备版本id
+              
+              if(!$result['type']){
+                  $type = '1-'.$account_type; //不存在为通用版1 (定制版2,高端版3）
+              }
+              else{
+                  $type = $result['type'].'-'.$account_type;                              
+              }
+          }
+          else{
+              $type =  $account_type;
+          }
+          
+          
           if(!$uid){
-                $sql_device.="('".$ExlData[$i]['A']."',".$hotel_id.",'".$group_id."','".$create_time."',0),";
+                $sql_device.="('".$ExlData[$i]['A']."',".$hotel_id.",'".$group_id."','".$create_time."',0,'".$type."'),";
                 $sql_user_id.="('".$ExlData[$i]['A']."','".$create_time."',0,1),";
                 $import_number++;
            }
        }
        
        $sql_device = substr($sql_device,0,strlen($sql_device)-1);
-       $sql_user_id = substr($sql_user_id,0,strlen($sql_user_id)-1);
-      
+       $sql_user_id = substr($sql_user_id,0,strlen($sql_user_id)-1); 
+       
+       if($device_ids){
+          $sql_device_ids = substr($device_ids,0,strlen($sql_device_ids)-1);
+       }
+       
+       //dump($sql_device_ids);
+       //exit;
        try{
+           if($device_ids){
+                $sql = 'update wb_device set status=-1 where in in('.$sql_device_ids.')';
+                $device->execute($sql); //删除已存在版本设备
+           }
+           //dump($sql);
            $device_result = $device->execute($sql_device);
            $user_id_result = $user_id->execute($sql_user_id);
+           
+           
           
        }catch (\Exception $e){
            echo $e->getMessage();
        }
-          
-       //dump($import_number);exit;
+        //exit;
+       //ump($import_number);exit;
        return $import_number;  
    }
 

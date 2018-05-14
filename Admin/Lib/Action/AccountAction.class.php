@@ -279,11 +279,17 @@ class AccountAction extends CommonAction {
         $hotel = M('Hotel');
         $device = M('Device');
         $at_time = date('Y-m-d H:i:s');
-        //dump($ExlData);
+        //dump($ExlData);exit;
         //验证不能为空
         for($i = 2,$j=0;$i<=sizeof($ExlData)+1;$i++,$j++){
             if(empty($ExlData[$i]['A'])){
                 $this->error("第:".$i++."行不能为空!");
+            }
+            if(empty($ExlData[$i]['E'])){
+                $this->error("第:".$i++."行不能为空!");
+            }
+            if(stripos($ExlData[$i]['B'], 'E+')){
+                $this->error("第:".$i++."行格式不正确!");
             }
         }
         
@@ -295,6 +301,7 @@ class AccountAction extends CommonAction {
                 'user_id' => trim($ExlData[$i]['B']),
                 'device_code' => trim($ExlData[$i]['C']),
                 'device_mac' => trim($ExlData[$i]['D']),
+                'type' => trim($ExlData[$i]['E']),
                 'group_id' => $hotel_info['group_id'],
                 'create_date' =>$at_time,
                 'status'  => 1
@@ -314,7 +321,7 @@ class AccountAction extends CommonAction {
                     $device->data($dataList[$j])->where($where)->save();
                 }
                 else{
-                    echo 'nothing to do !';
+                    //echo 'nothing to do !';
                 }
                //exit; 
                 
@@ -325,7 +332,7 @@ class AccountAction extends CommonAction {
             }
             
         }
-        
+      
         return $result;
     }  
     
