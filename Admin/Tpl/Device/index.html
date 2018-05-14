@@ -68,8 +68,9 @@
 		<th align="left">广电号</th>
 		<th align="left">设备MAC</th>
 		<th align="left">分组ID</th>
-		<th align="left">播控ID</th>		
-		<th align="left">状态</th>
+		<th align="left">播控ID</th>	
+		<th align="left">类型</th>	
+		<th align="left">状态</th>		
 		<th align="left">创建时间</th>	
 		<th align="left">管理操作</th>							
         </tr>
@@ -85,7 +86,8 @@
 	<td align="left"><a title=<if condition="$vo['retain_mac'] neq null">"{$vo['retain_mac']}"<else/>"服务集查询，面板预览"</if> href="__URL__/service/mac/{$vo['device_mac']}/hotel/{$hotel_name}" class="tips"><if condition="$vo['retain_mac'] neq null"><font style="color:red;">{$vo['device_mac']}</font><else/>{$vo['device_mac']}</if></a></td>		
 	<td align="left">{$vo['group_id']}</td>
 	<td align="left">{$vo['ysten_gid']}</td>
-	<td align="left"><if condition="$vo['group_id'] eq $vo['ysten_gid'] AND $vo['group_id'] neq 0 AND $vo['ysten_gid'] neq 0 "><font style="color:green">已上线</font><else/><font style="color:#F09815">未上线</font></if></td>
+	<td align="left">{$vo['type']}<php>//if($vo['type']=='1-3'){ echo '通用转高端';}else if($vo['type']=='2-3'){ echo '定制转高端';}else if($vo['type']=='1-2'){ echo '通用转定制';}else{echo $vo['type'];}</php></td>
+	<td align="left"><if condition="$vo['group_id'] eq $vo['ysten_gid'] AND $vo['group_id'] neq 0 AND $vo['ysten_gid'] neq 0 "><font style="color:green">已上线</font><else/><font style="color:#F09815">未上线</font></if></td>	
 	<td align="left">{$vo['create_date']}</td>
 	<td align="left">
 	<a href="__URL__/sync/mac/{$vo['device_mac']}" title="分组ID同步">同步</a> | 

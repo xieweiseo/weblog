@@ -57,7 +57,8 @@ div.btn{height:42px;}
                    分组
           <input type="text" name="group_id" value="{:I('group_id')}" size="5">&nbsp;&nbsp;&nbsp;		  
                  时间
-          <input type="text" name="timegap" value="{:I('timegap')}" id="start_time" style="width:190px;">		  
+          <input type="text" name="timegap" value="{:I('timegap')}" id="start_time" style="width:190px;">&nbsp;&nbsp;	
+          版本 <select name="type"><option value="0">--全部--</option><option value="1" <php>if(I('type')==1){echo 'selected="selected"';}</php>>通用版</option><option value="2" <php>if(I('type')==2){echo 'selected="selected"';}</php>>定制版</option><option value="3" <php>if(I('type')==3){echo 'selected="selected"';}</php>>高端版</option></select>	  
 		  </span>                   
                酒店名
           <input type="text" name="hotel_name" value="{:I('hotel_name')}">&nbsp;		
@@ -69,7 +70,8 @@ div.btn{height:42px;}
 	      <select name="online_count"><option value="rc" <php>if($_POST['online_count']=="rc"){echo "selected='selected'";}</php>>房间数</option><option value="oc" <php>if($_POST['online_count']=="oc"){echo "selected='selected'";}</php>>上线数</option></select>
 	      <input type="text" name="start_num" size="5" value="{:I('start_num')}"> --  
 	 	  <input type="text" name="end_num" size="5" value="{:I('end_num')}">&nbsp;        
-	  状态 <select name="online"><option value="0">--全部--</option><option value="1" <php>if(I('online')==1){echo 'selected="selected"';}</php>>已上线</option><option value="2" <php>if(I('online')==2){echo 'selected="selected"';}</php>>未上线</option></select>&nbsp;	              
+	  状态 <select name="online"><option value="0">--全部--</option><option value="1" <php>if(I('online')==1){echo 'selected="selected"';}</php>>已上线</option><option value="2" <php>if(I('online')==2){echo 'selected="selected"';}</php>>未上线</option></select>&nbsp;&nbsp;	 
+	  	             
           
 
 <input  type="submit"  name='dosubmit' class="btn-info" value="搜索" />                   
@@ -95,6 +97,7 @@ div.btn{height:42px;}
 		<th align="left">播控ID</th>
 		<th align="center">设备数</th>
 		<th align="center">上线数</th>
+		<th align="center">类型</th>
 		<th align="center">状态</th>
 		<th align="left">创建时间</th>	
 		<th align="left">管理操作</th>							
@@ -121,11 +124,13 @@ div.btn{height:42px;}
  			<font style="color:red">{$vo['online_count']}</font>
 	  </if>
 	 </a></td>
+	<td align="left"><php>if($vo['type']==1){echo '通用版';}if($vo['type']==2){echo '定制版';}if($vo['type']==3){echo '高端版';}</php></td>
 	<td align="center"><if condition="$vo['status'] eq 0"><font style="color:green">nor</font><else/><a class='tips' title="点击查看换机设备" href="{:U('Device/index',array('hotel_id'=>$vo['id'],'group_id'=>$vo['group_id']),'')}"><font style="color:red">rep</font></a></if></td>   	
 	<td align="left">{$vo['create_date']}</td>	
 	<td align="left">
 	<a href="{:U('Device/index',array('hotel_id'=>$vo['id'],'group_id'=>$vo['group_id']),'')}" class='tips'>查看</a> | 
 	<a href="__URL__/edit/id/{$vo['id']}">修改</a> | 
+	<a href="{:U('Panel/index',array('hotel_id'=>$vo['id']),'')}">面板</a> |
 	<a href="__URL__/del/id/{$vo['id']}" onClick="return confirm('确定删除该记录吗?')">删除</a>
 	</td>
 	</tr>

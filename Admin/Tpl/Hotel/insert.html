@@ -34,6 +34,17 @@
             <td align="left"><input type="text" name="group_id" id="group_id" size="50" value="{$vo['group_id']}"> <span class="red_font">*</span></td>	            
             </tr>
             <tr>
+            <td width="70" align="center">版本：</td>
+            <td align="left">            		
+				<select name="type" style="width:285px;">
+				 <option value='1' <if condition="$vo['type']==1">selected="selected"<else/>--</if>>通用版</option>
+				 <option value='2' <if condition="$vo['type']==2">selected="selected"<else/>--</if>>定制版</option>
+				 <option value='3' <if condition="$vo['type']==3">selected="selected"<else/>--</if>>高端版</option>
+				</select>		
+						
+            </td>	
+            </tr>            
+            <tr>
             <td width="70" align="center">地区：</td>
             <td align="left">            	
 				<p id="city_china_val">		

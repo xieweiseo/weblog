@@ -27,7 +27,17 @@
             </td>	
             </tr> 
             <tr >
-            <td width="50" align="center" style="border: 0;"></td>
+            <td width="50" align="center">类型：</td>
+            <td align="left">
+            <div id="cktype" style="margin: 2px 0;">
+                <label><input style="vertical-align:middle;" type="checkbox" name="account_type" value='1'><span style="vertical-align:middle;">通用版</span></label>
+                <label><input style="vertical-align:middle;" type="checkbox" name="account_type" value='2'><span style="vertical-align:middle;">定制版</span></label>
+                <label><input style="vertical-align:middle;" type="checkbox" name="account_type" value='3'><span style="vertical-align:middle;">高端版</span></label>
+            </div>
+            </td>   
+            </tr>             
+            <tr style="background-color:#eaf4d6">
+            <td width="50" align="center"></td>
             <td align="left" style="border: 0;" >
             <div id="ckbtn" style="margin: 10px 0;">
                 <label><input style="vertical-align:middle;" type="checkbox" name="account_import" value='1'><span style="vertical-align:middle;">电视账号</span></label>
@@ -55,7 +65,12 @@ $(function(){
 	//checkbox单选
     $('#ckbtn').find('input[type=checkbox]').bind('click', function(){  
         $('#ckbtn').find('input[type=checkbox]').not(this).attr("checked", false);  
-    });  	
+    });  
+
+    $('#cktype').find('input[type=checkbox]').bind('click', function(){  
+        $('#cktype').find('input[type=checkbox]').not(this).attr("checked", false);  
+    });	
+	
 	
 	//表单提交
 	$('#upload').click(function(){

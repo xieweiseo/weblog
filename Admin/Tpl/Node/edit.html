@@ -4,8 +4,8 @@
 <script type="text/javascript">        
 $(function(){
 	$.formValidator.initConfig({theme:"ArrowSolidBox",submitOnce:true,formID:"form",onError:function(msg){}});
-	$("#title").formValidator({onshow:"²Ëµ¥Ãû²»ÄÜÎª¿Õ",onFocus:"²Ëµ¥Ãû²»ÄÜÎª¿Õ"}).inputValidator({min:1,max:50,onError:"²Ëµ¥Ãû²»ÄÜÎª¿Õ"});
-	$("#name").formValidator({onshow:"Á´½Ó²»ÄÜÎª¿Õ",onFocus:"Á´½Ó²»ÄÜÎª¿Õ"}).inputValidator({min:1,max:50,onError:"Á´½Ó²»ÄÜÎª¿Õ"});
+	$("#title").formValidator({onshow:"èœå•åä¸èƒ½ä¸ºç©º",onFocus:"èœå•åä¸èƒ½ä¸ºç©º"}).inputValidator({min:1,max:50,onError:"èœå•åä¸èƒ½ä¸ºç©º"});
+	$("#name").formValidator({onshow:"é“¾æ¥ä¸èƒ½ä¸ºç©º",onFocus:"é“¾æ¥ä¸èƒ½ä¸ºç©º"}).inputValidator({min:1,max:50,onError:"é“¾æ¥ä¸èƒ½ä¸ºç©º"});
 });
 </script>
 <style type="text/css"> 
@@ -40,15 +40,15 @@ form div { margin:5px 0;}
 <div style="border:1px solid #C8DAA3;">
  <div>
     <div style="background:#EEF5DE;height:25px;padding-top: 5px;">
-   <span style="margin-right:5px;margin-left:5px;font-size:12px;">µ±Ç°Î»ÖÃ:»áÔ±>ĞŞ¸Ä½Úµã</span>
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;">å½“å‰ä½ç½®:ä¼šå‘˜>ä¿®æ”¹èŠ‚ç‚¹</span>
     </div>
    
 </div>
 <div style="border:1px solid #C8DAA3;">
  <div>
     <div style="background:#FFFFFF;height:25px;margin-bottom:5px;">
-   <span style="margin-right:5px;margin-left:5px;font-size:12px;"><a href="__URL__/index"  target="main" title="½Úµã¹ÜÀí">½Úµã¹ÜÀí</a></span>|
-   <span style="margin-right:5px;margin-left:5px;font-size:12px;"><a href="__URL__/edit"  target="main" title="ĞŞ¸Ä½Úµã">ĞŞ¸Ä½Úµã</a></span>
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;"><a href="__URL__/index"  target="main" title="èŠ‚ç‚¹ç®¡ç†">èŠ‚ç‚¹ç®¡ç†</a></span>|
+   <span style="margin-right:5px;margin-left:5px;font-size:12px;"><a href="__URL__/edit"  target="main" title="ä¿®æ”¹èŠ‚ç‚¹">ä¿®æ”¹èŠ‚ç‚¹</a></span>
     </div>
    <hr />
 </div>
@@ -57,10 +57,10 @@ form div { margin:5px 0;}
     <table width="100%" cellspacing="0" style="font-size:12px;">
        <tbody>
              <tr>
-            <td width="50" align="right">ÉÏ¼¶½Úµã£º</td>
+            <td width="50" align="right">ä¸Šçº§èŠ‚ç‚¹ï¼š</td>
             <td align="left">
            <select name="pid">
-             <option value="0">¶¥¼¶</option>
+             <option value="0">é¡¶çº§</option>
              <volist name="nodelist" id="nid">
              <if condition="$vo['pid'] eq $nid['id']"> 
             <option value="{$nid['id']}" selected>{$nid['title']}</option>
@@ -72,13 +72,13 @@ form div { margin:5px 0;}
             </td>	
             </tr>
              <tr>
-            <td width="50" align="right">±¸×¢£º</td>
+            <td width="50" align="right">å¤‡æ³¨ï¼š</td>
             <td align="left">
            <input type="text" name="remark" id="remark" value="{$vo['remark']}">
             </td>	
             </tr>
              <tr>
-            <td width="50" align="right">ÅÅĞò£º</td>
+            <td width="50" align="right">æ’åºï¼š</td>
             <td align="left">                         
             <input type="text" name="sort" id="sort" size="5" value="{$vo['sort']}">
             </td>	
@@ -87,8 +87,8 @@ form div { margin:5px 0;}
     </table>
 	<div class="btn" style="font-size:12px;">
          <input type=hidden name="id" value="{$vo['id']}">
-          <input type="submit" value="Ìá½»" id="send" class="button" style="margin-left: 450px;">&nbsp;&nbsp;
-		 <input  type="button" id="cancel" class="button" value="È¡ Ïû" alt="È¡Ïû" />
+          <input type="submit" value="æäº¤" id="send" class="button" style="margin-left: 450px;">&nbsp;&nbsp;
+		 <input  type="button" id="cancel" class="button" value="å– æ¶ˆ" alt="å–æ¶ˆ" />
 	   </div>
 </form>
 </div>

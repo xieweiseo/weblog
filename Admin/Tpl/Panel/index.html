@@ -28,7 +28,7 @@ function delet()
 <div style="border:1px solid #C8DAA3;margin-bottom:3px;">
  <div>
    <div style="background:#FFFFFF;height:25px;margin-bottom:2px;padding-top:8px;">
-     <a href="javascript:void(0)"  target="main" title="panel" style="text-decoration:none;color:#333">
+     <a href="{:U(import,array('hotel_id'=>$hotel_id))}"  target="main" title="panel" style="text-decoration:none;color:#333">
      <span style="margin-right:5px;margin-top:5px;margin-left:10px;padding: 3px;font-size:12px;background-color:#618d01;color:#fff;">
             导 入</span></a>| 
      <span style="margin-right:5px;margin-left:5px;font-size:12px;">
@@ -52,7 +52,8 @@ function delet()
             </tr>
         </thead>
     <tbody> 
-  <volist name="panel_list" id="vo">
+  <php>if($panel_list):</php>
+   <volist name="panel_list" id="vo">
 	<tr>
 	<td align="center"><input type="checkbox" name="id[]" value="{$vo['id']}" class="aids" id="id"></td>	
     <td align="left"></td>
@@ -78,11 +79,17 @@ function delet()
   	</tr>
   	</volist>	
   </volist>	
+  <php>else:</php>
+  <tr>
+     <td colspan="6" align="center" height=26>暂无数据！</td>  
+  </tr>
+  <php>endif;</php>
   </tbody>
  </table>
     <php>if($panel_list):</php>
 	<div class="btn" style="font-size:12px;">
-        <input type="button" name="act" value="删除" class="coolbg" id="del"/>
+        <input type="button" name="act" value="删除" class="coolbg" id="del"/>&nbsp;&nbsp;
+        <input type="button" value="返回" class="coolbg" id="res"/>
         &nbsp;&nbsp;<div id="pages"> {$page}</div>
 	</div>
 	<php>endif;</php>
@@ -120,6 +127,11 @@ $(function(){
 	        ;
 	    }
 	})
+
+	$("#res").click(function(){
+	   window.history.back();
+	});	
+	
 })
 </script>
 </body>
